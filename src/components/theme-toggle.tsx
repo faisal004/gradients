@@ -49,7 +49,7 @@ export default function ThemeToggle() {
     };
 
     return (
-        <Button onClick={toggleTheme} className="cursor-pointer" size={"icon"} >
+        <Button onClick={toggleTheme} className="cursor-pointer" size={"icon"} variant={"ghost"} >
             {isDark ? <Sun /> : <Moon />}
         </Button>
     );
