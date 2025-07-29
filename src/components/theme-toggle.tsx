@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
+import { Moon, Sun } from 'lucide-react';
 
 export default function ThemeToggle() {
     const [mounted, setMounted] = useState(false);
@@ -48,8 +49,8 @@ export default function ThemeToggle() {
     };
 
     return (
-        <Button onClick={toggleTheme}>
-            {isDark ? 'Switch to Light' : 'Switch to Dark'}
+        <Button onClick={toggleTheme} className="cursor-pointer">
+            {isDark ? <Sun /> : <Moon />}
         </Button>
     );
 }
