@@ -1,6 +1,4 @@
-"use client"
 import { Colorful } from "@uiw/react-color";
-import { useState } from "react";
 import {
     Popover,
     PopoverContent,
