@@ -1,24 +1,55 @@
 'use client';
-import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 
 export default function ThemeToggle() {
-    const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const [isDark, setIsDark] = useState(false);
 
     useEffect(() => {
         setMounted(true);
+        const savedTheme = document.documentElement.dataset.theme;
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initialDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+        setIsDark(initialDark);
+        document.documentElement.dataset.theme = initialDark ? 'dark' : 'light';
+        if (initialDark) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
     }, []);
 
     if (!mounted) return null;
+
     const toggleTheme = () => {
-        setTheme(theme === 'dark' ? 'light' : 'dark');
+        if (typeof window === 'undefined') return;
+        if (document.startViewTransition) {
+            document.startViewTransition(() => {
+                const newDark = !isDark;
+                setIsDark(newDark);
+                document.documentElement.dataset.theme = newDark ? 'dark' : 'light';
+                if (newDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            });
+        } else {
+            const newDark = !isDark;
+            setIsDark(newDark);
+            document.documentElement.dataset.theme = newDark ? 'dark' : 'light';
+            if (newDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
     };
 
     return (
         <Button onClick={toggleTheme}>
-            {theme === 'dark' ? 'Switch to Light' : 'Switch to Dark'}
+            {isDark ? 'Switch to Light' : 'Switch to Dark'}
         </Button>
     );
 }

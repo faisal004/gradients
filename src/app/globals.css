@@ -120,3 +120,40 @@
     @apply bg-background text-foreground;
   }
 }
+/* View transition styles */
+::view-transition-new(root),
+::view-transition-old(root) {
+  animation: pan 1.5s ease-in-out;
+  backface-visibility: hidden;
+  box-shadow: 2.2px 61.3px 73.1px -2px rgba(0, 0, 0, 0.58);
+}
+
+::view-transition-new(root) {
+  --sr: 180deg;
+}
+
+::view-transition-old(root) {
+  --sr: 0deg;
+  backface-visibility: hidden;
+}
+
+html {
+  view-transition-name: root;
+}
+
+@keyframes pan {
+  0% {
+    transform: scale(1) rotateY(var(--sr));
+  }
+  25% {
+    transform: scale(0.5) rotateY(var(--sr));
+    box-shadow: 1.8px 50.7px 51.4px -3.2px rgba(0, 0, 0, 0.32);
+  }
+  75% {
+    transform: scale(0.5) rotateY(calc(var(--sr) + 180deg));
+    box-shadow: 1.8px 50.7px 51.4px -3.2px rgba(0, 0, 0, 0.32);
+  }
+  100% {
+    transform: scale(1) rotateY(calc(var(--sr) + 180deg));
+  }
+}
