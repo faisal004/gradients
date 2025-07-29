@@ -116,11 +116,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
-/* View transition styles */
+
 ::view-transition-new(root),
 ::view-transition-old(root) {
   animation: pan 1.5s ease-in-out;
@@ -139,20 +140,26 @@
 
 html {
   view-transition-name: root;
+
 }
+
+
 
 @keyframes pan {
   0% {
     transform: scale(1) rotateY(var(--sr));
   }
+
   25% {
     transform: scale(0.5) rotateY(var(--sr));
     box-shadow: 1.8px 50.7px 51.4px -3.2px rgba(0, 0, 0, 0.32);
   }
+
   75% {
-    transform: scale(0.5) rotateY(calc(var(--sr) + 180deg));
+    transform: scale(1) rotateY(calc(var(--sr) + 180deg));
     box-shadow: 1.8px 50.7px 51.4px -3.2px rgba(0, 0, 0, 0.32);
   }
+
   100% {
     transform: scale(1) rotateY(calc(var(--sr) + 180deg));
   }
