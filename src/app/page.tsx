@@ -1,8 +1,15 @@
+import ThemeToggle from "@/components/theme-toggle";
+
 export default function Home() {
+
+
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-8">
-      <h1 className="text-white text-3xl font-bold text-center mb-8">Complete Gradient Collection</h1>
-      
+    <div className="min-h-screen flex flex-col items-center justify-center  p-8">
+      <h1 className="text-white  text-3xl font-bold text-cenA tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+      ter mb-8">Complete Gradient Collection</h1>
+      <ThemeToggle />
+    
       {/* Your Original Examples */}
       <div className="mb-12">
         <h2 className="text-white text-xl mb-4">Your Original Examples</h2>
@@ -121,7 +128,7 @@ export default function Home() {
         </div>
       </div>
 
-    
+
     </div>
   );
 }
