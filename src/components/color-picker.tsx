@@ -20,7 +20,7 @@ const ColorPicker = ({ label, value, onChange }: ColorPickerProps) => (
           <Button
             variant="ghost"
             size="sm"
-            className="w-4 h-4 p-0 absolute right-3 top-1/2 -translate-y-1/2 z-10 rounded-full border-2 border-zinc-100/20"
+            className="w-4 h-4 p-0 absolute right-3 top-1/2 -translate-y-1/2 z-10 rounded-full border-2 dark:border-zinc-100/20 border-zinc-900/20"
             style={{ backgroundColor: value }}
           />
         </PopoverTrigger>

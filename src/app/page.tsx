@@ -15,7 +15,7 @@ export default function Home() {
       <div className="col-span-9 z-10">
         <GradientScreen />
       </div>
-      <div className="col-span-3 z-10 dark:bg-[var(--brand)] bg-[var(--brand)] border-2 border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-lg p-4">
+      <div className="col-span-3 z-10 dark:bg-[var(--brand)] bg-[var(--brand)] border-2 border-zinc-800/10 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-lg p-4">
         <RightSidebar />
       </div>
     </div>
