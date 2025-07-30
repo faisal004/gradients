@@ -11,12 +11,14 @@ const GradientCopyButton = () => {
     const [isCopied, setIsCopied] = useState(false)
     const from = useGradientStore(s => s.from);
     const to = useGradientStore(s => s.to);
+    const via = useGradientStore(s => s.via);
 
     const copy = () => {
         const tailwind = convertToTailwind({
             type: "linear",
             from,
             to,
+            via,
             direction: "r",
         })
         navigator.clipboard.writeText(tailwind)

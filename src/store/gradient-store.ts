@@ -3,13 +3,17 @@ import { create } from 'zustand';
 interface GradientState {
   from: string;
   to: string;
+  via?: string;
   setFrom: (color: string) => void;
   setTo: (color: string) => void;
+  setVia: (color?: string) => void;
 }
 
 export const useGradientStore = create<GradientState>((set) => ({
-  from: '#06b6d4', 
-  to: '#ef4444',   
+  from: '#06b6d4',
+  to: '#ef4444',
+  via: "",
   setFrom: (color) => set({ from: color }),
   setTo: (color) => set({ to: color }),
+  setVia: (color) => set({ via: color }),
 }));

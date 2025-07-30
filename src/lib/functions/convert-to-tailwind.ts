@@ -18,13 +18,13 @@ const convertToTailwind = ({
   switch (type) {
     case "linear": {
       const classes = [`bg-gradient-to-${direction}`, `from-[${from}]`];
-      if (via) classes.push(`via-[${via}]`);
+      if (via && via !== "") classes.push(`via-[${via}]`);
       classes.push(`to-[${to}]`);
       return classes.join(" ");
     }
     case "radial": {
       const classes = ["bg-radial", `from-[${from}]`];
-      if (via) classes.push(`via-[${via}]`);
+      if (via && via !== "") classes.push(`via-[${via}]`);
       classes.push(`to-[${to}]`);
       return classes.join(" ");
     }
