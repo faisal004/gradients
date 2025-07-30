@@ -1,5 +1,4 @@
 type GradientType = "linear" | "radial";
-
 interface ConvertToTailwindOptions {
   type: GradientType;
   from: string;
