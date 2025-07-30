@@ -1,4 +1,8 @@
+import { Github } from "lucide-react"
 import ThemeToggle from "./theme-toggle"
+import {  buttonVariants } from "./ui/button"
+import Link from "next/link"
+import { cn } from "@/lib/utils"
 
 const Navbar = () => {
     return (
@@ -6,7 +10,12 @@ const Navbar = () => {
             <div className="text-2xl font-bold tracking-widest">
                 Gradio
             </div>
-            <ThemeToggle />
+            <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <Link href="https://github.com/faisal004/gradients" target="_blank" className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}>
+                    <Github className="h-5 w-5" />
+                </Link>
+            </div>
         </div>
     )
 }
