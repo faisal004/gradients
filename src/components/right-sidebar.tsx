@@ -3,9 +3,10 @@ import ThemeToggle from "./theme-toggle"
 import { useGradientStore } from "../store/gradient-store";
 import ColorPicker from "./color-picker";
 import { useState } from "react";
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Input } from "./ui/input";
 import { Label } from "@/components/ui/label"
+
 const RightSidebar = () => {
     const [addVia, setAddVia] = useState(false)
     const from = useGradientStore(s => s.from);
@@ -14,14 +15,16 @@ const RightSidebar = () => {
     const setTo = useGradientStore(s => s.setTo);
     const via = useGradientStore(s => s.via);
     const setVia = useGradientStore(s => s.setVia);
+
     const toggleAddVia = () => {
         if (addVia) {
             setVia("")
         } else {
-            setVia("#06b6d4")
+            setVia("#34692e")
         }
         setAddVia(!addVia)
     }
+
     return (
         <div className="flex flex-col items-center justify-between gap-5 ">
             <div className="flex items-center justify-between w-full ">
@@ -42,29 +45,25 @@ const RightSidebar = () => {
                 </div>
                 <div className="flex flex-col gap-2 w-full">
                     <ColorPicker label="From" value={from} onChange={setFrom} />
-                    {addVia && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0, y: -10 }}
-                            animate={{ opacity: 1, height: "auto", y: 0 }}
-                            exit={{ opacity: 0, height: 0, y: -10 }}
-                            transition={{
-                                duration: 0.4,
-                                ease: "easeInOut",
-                                height: { duration: 0.3 }
-                            }}
-
-                        >
-                            <ColorPicker label="Via" value={via || ""} onChange={setVia} />
-
-                        </motion.div>
-                    )}
+                    <AnimatePresence>
+                        {addVia && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0, y: -10 }}
+                                animate={{ opacity: 1, height: "auto", y: 0 }}
+                                exit={{ opacity: 0, height: 0, y: -10 }}
+                                transition={{
+                                    duration: 0.4,
+                                    ease: "easeInOut",
+                                    height: { duration: 0.4 }
+                                }}
+                            >
+                                <ColorPicker label="Via" value={via || ""} onChange={setVia} />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                     <ColorPicker label="To" value={to} onChange={setTo} />
                 </div>
-
-
-
             </div>
-
         </div>
     )
 }
