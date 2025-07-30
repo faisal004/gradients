@@ -11,6 +11,7 @@ import { CSS_DIRECTION_VALUES } from "@/lib/data/directions"
 
 const Directions = () => {
     const setDirection = useGradientStore(s => s.setDirection);
+    const direction = useGradientStore(s => s.direction);
     return (
 
         <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-lg p-3">
@@ -21,7 +22,7 @@ const Directions = () => {
 
             </div>
             <div className="flex flex-col gap-2 w-full">
-                <Select onValueChange={setDirection}>
+                <Select onValueChange={setDirection} defaultValue={direction}>
                     <SelectTrigger className="w-full text-xs ">
                         <SelectValue placeholder="Select a direction" />
                     </SelectTrigger>
