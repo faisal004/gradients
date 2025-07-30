@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "./ui/button"
 import { Copy, Check } from "lucide-react"
 import { useGradientStore } from "../store/gradient-store"
+import convertCSSDirectionToTailwindDirection from "@/lib/functions/convert-css-to-tailwind-dir"
 import convertToTailwind from "@/lib/functions/convert-to-tailwind"
 
 const GradientCopyButton = () => {
@@ -12,14 +13,16 @@ const GradientCopyButton = () => {
     const from = useGradientStore(s => s.from);
     const to = useGradientStore(s => s.to);
     const via = useGradientStore(s => s.via);
+    const direction = useGradientStore(s => s.direction);
 
     const copy = () => {
+        const tailwindDirection = convertCSSDirectionToTailwindDirection(direction)
         const tailwind = convertToTailwind({
             type: "linear",
             from,
             to,
             via,
-            direction: "r",
+            direction: tailwindDirection,
         })
         navigator.clipboard.writeText(tailwind)
         setIsCopied(true)
