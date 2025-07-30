@@ -25,8 +25,8 @@ const Palette = () => {
         }
         return (
 
-            <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-lg p-3">
-            <div className="flex items-center justify-between w-full text-xs px-1">
+            <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
+            <div className="flex items-center justify-between w-full text-sm px-1">
                 <div className=" font-bold tracking-widest">
                     Palette
                 </div>

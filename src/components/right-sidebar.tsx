@@ -6,7 +6,7 @@ import ThemeToggle from "./theme-toggle"
 const RightSidebar = () => {
     return (
         <div className="flex flex-col items-center justify-between gap-5 ">
-            <div className="flex items-center justify-between w-full ">
+            <div className="md:flex items-center justify-between w-full hidden ">
                 <div className="text-2xl font-bold tracking-widest">
                     Gradio
                 </div>
