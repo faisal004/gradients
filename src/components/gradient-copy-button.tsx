@@ -14,6 +14,9 @@ const GradientCopyButton = () => {
     const to = useGradientStore(s => s.to);
     const via = useGradientStore(s => s.via);
     const direction = useGradientStore(s => s.direction);
+    const fromPercentage = useGradientStore(s => s.fromPercentage);
+    const toPercentage = useGradientStore(s => s.toPercentage);
+    const viaPercentage = useGradientStore(s => s.viaPercentage);
 
     const copy = () => {
         const tailwindDirection = convertCSSDirectionToTailwindDirection(direction)
@@ -23,6 +26,9 @@ const GradientCopyButton = () => {
             to,
             via,
             direction: tailwindDirection,
+            fromPercentage,
+            toPercentage,
+            viaPercentage
         })
         navigator.clipboard.writeText(tailwind)
         setIsCopied(true)
