@@ -1,13 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const KnobWidget = () => {
-    const [value, setValue] = useState(50);
+interface KnobProps {
+    label?: string;
+    percentage: number;
+    onChange?: (value: number) => void;
+    
+}
+
+
+const KnobWidget = ({label, percentage, onChange}: KnobProps) => {
+    const [value, setValue] = useState(percentage);
     const [min] = useState(0);
     const [max] = useState(100);
     const [isDragging, setIsDragging] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(Number(e.target.value));
+        onChange?.(Number(e.target.value));
     };
 
     const handleMouseDown = () => {
@@ -89,10 +98,12 @@ const KnobWidget = () => {
                             {generateTicks()}
 
                             <div className="absolute top-8 left-1/2 transform -translate-x-1/2 text-sm font-light text-gray-600 uppercase">
-                                From
+                                {label} 
                             </div>
 
-
+                            <div className="absolute bottom-15 left-1/2 transform -translate-x-1/2 text-sm font-light text-gray-600 uppercase">
+                             <span className="font-bold text-gray-600 bg-gray-200  px-3 py-1 shadow-inner">{value}</span>
+                            </div>
                             <div
                                 className={`absolute top-1/2 left-1/2 w-24 h-24 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${isDragging ? 'shadow-lg scale-105' : 'shadow-md'
                                     } bg-gradient-to-br from-white via-gray-100 to-gray-200 border-2 border-gray-300 cursor-grab active:cursor-grabbing`}
