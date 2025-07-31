@@ -7,25 +7,28 @@ import { Label } from "@/components/ui/label"
 import ColorPicker from "../color-picker"
 
 const Palette = () => {
-        const [addVia, setAddVia] = useState(false)
-        const from = useGradientStore(s => s.from);
-        const to = useGradientStore(s => s.to);
-        const setFrom = useGradientStore(s => s.setFrom);
-        const setTo = useGradientStore(s => s.setTo);
-        const via = useGradientStore(s => s.via);
-        const setVia = useGradientStore(s => s.setVia);
-    
-        const toggleAddVia = () => {
-            if (addVia) {
-                setVia("")
-            } else {
-                setVia("#34692e")
-            }
-            setAddVia(!addVia)
-        }
-        return (
 
-            <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
+
+    const addVia = useGradientStore(s => s.addVia);
+    const setAddVia = useGradientStore(s => s.setAddVia);
+    const from = useGradientStore(s => s.from);
+    const to = useGradientStore(s => s.to);
+    const setFrom = useGradientStore(s => s.setFrom);
+    const setTo = useGradientStore(s => s.setTo);
+    const via = useGradientStore(s => s.via);
+    const setVia = useGradientStore(s => s.setVia);
+
+    const toggleAddVia = () => {
+        if (addVia) {
+            setVia("")
+        } else {
+            setVia("#34692e")
+        }
+        setAddVia(!addVia)
+    }
+    return (
+
+        <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
             <div className="flex items-center justify-between w-full text-sm px-1">
                 <div className=" font-bold tracking-widest">
                     Palette
@@ -56,7 +59,8 @@ const Palette = () => {
                 <ColorPicker label="To" value={to} onChange={setTo} />
             </div>
         </div>
-        )}
+    )
+}
 
 
-        export default Palette
+export default Palette

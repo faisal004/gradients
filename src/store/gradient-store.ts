@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 
 interface GradientState {
+  addVia: boolean;
+  setAddVia: (addVia: boolean) => void;
   from: string;
   to: string;
   via?: string;
@@ -12,6 +14,8 @@ interface GradientState {
 }
 
 export const useGradientStore = create<GradientState>((set) => ({
+  addVia: false,
+  setAddVia: (addVia) => set({ addVia }),
   from: '#06b6d4',
   to: '#ef4444',
   direction: "right",
