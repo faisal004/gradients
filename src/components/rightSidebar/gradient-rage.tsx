@@ -1,18 +1,10 @@
 "use client"
 import { useGradientStore } from "../../store/gradient-store"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { CSS_DIRECTION_VALUES } from "@/lib/data/directions"
-import KnobWidget from "../knob"
+
+import AnimatedSlider from "../percentage-slider"
 
 const GradientRange = () => {
-    const setDirection = useGradientStore(s => s.setDirection);
-    const direction = useGradientStore(s => s.direction);
+ 
     return (
 
         <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
@@ -22,8 +14,10 @@ const GradientRange = () => {
                 </div>
 
             </div>
-            <div className="flex flex-col gap-2 w-full">
-             <KnobWidget label="From" percentage={0} onChange={ (value) => console.log(value)} />
+            <div className="flex h-full   w-full p-3">
+                <AnimatedSlider label="From" defaultValue={0} onChange={(value) => console.log(value)} />
+                <AnimatedSlider label="To" defaultValue={50} onChange={(value) => console.log(value)} />
+                <AnimatedSlider label="Range" defaultValue={100} onChange={(value) => console.log(value)} />
 
             </div>
         </div>
