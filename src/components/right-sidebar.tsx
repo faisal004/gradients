@@ -6,6 +6,7 @@ import ThemeToggle from "./theme-toggle"
 import { Button, buttonVariants } from "./ui/button"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import KnobWidget from "./knob"
 
 const RightSidebar = () => {
     return (
@@ -24,6 +25,7 @@ const RightSidebar = () => {
             <div className="flex flex-col gap-2 w-full">
                 <Palette />
                 <Directions />
+                
             </div>
         </div>
     )

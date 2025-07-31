@@ -1,4 +1,7 @@
+
+"use client"
 import GradientScreen from "@/components/gradient-screen";
+import KnobWidget from "@/components/knob";
 import RightSidebar from "@/components/right-sidebar";
 
 export default function Home() {
@@ -14,6 +17,7 @@ export default function Home() {
 
       <div className=" md:col-span-9 z-10">
         <GradientScreen />
+        <KnobWidget />
       </div>
       <div className=" md:col-span-3 z-10 dark:bg-[var(--brand)] bg-[var(--brand)]  border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-lg p-4">
         <RightSidebar />
