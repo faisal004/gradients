@@ -93,44 +93,42 @@ export default function DegreeSelector() {
     >
       <div className="flex flex-col items-center gap-6 shadow-[0_1px_20px_rgb(0,0,0,1)] rounded-full">
         <div className="relative size-40">
-          {/* Outer circle */}
           <div 
             id="degree-dial"
             className="absolute inset-0 rounded-full border-2 border-zinc-600 bg-zinc-800 "
           >
             
-            {/* {[...Array(12)].map((_, i) => (
+            {[...Array(12)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-0.5  h-8 bg-slate-300"
+                className="absolute w-0.5  h-4 bg-slate-300"
                 style={{
-                  top: '6.5px',
+                  top: '3px',
                   left: '50%',
                   zIndex: 1,
-                  transformOrigin: '50% 152px',
+                  transformOrigin: '50% 75px',
                   transform: `translateX(-50%) rotate(${i * 30}deg)`
                 }}
               />
-            ))} */}
+            ))}
             
-            {/* Minor degree markers (every 10°) */}
-            {/* {[...Array(36)].map((_, i) => {
-              if (i % 3 !== 0) { // Skip major markers
+            {[...Array(36)].map((_, i) => {
+              if (i % 3 !== 0) { 
                 return (
                   <div
                     key={`minor-${i}`}
                     className="absolute w-px h-4 bg-slate-500"
                     style={{
-                      top: '12px',
+                      top: '3px',
                       left: '50%',
-                      transformOrigin: '50% 148px',
+                      transformOrigin: '50% 75px',
                       transform: `translateX(-50%) rotate(${i * 10}deg)`
                     }}
                   />
                 );
               }
               return null;
-            })} */}
+            })}
 
           
 
@@ -142,7 +140,7 @@ export default function DegreeSelector() {
               ref={needleRef}
               className={`absolute w-1 bg-zinc-400 rounded-full origin-bottom z-20 cursor-grab ${isDragging ? 'cursor-grabbing bg-zinc-400' : ''}`}
               style={{
-                height: '60px',
+                height: '50px',
                 left: '50%',
                 bottom: '50%',
                 transformOrigin: '50% 100%',
