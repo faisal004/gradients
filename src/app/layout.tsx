@@ -27,7 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <script defer src="https://cloud.umami.is/script.js" data-website-id={process.env.NEXT_ANALYTICS_TOKEN}></script>
+      <head>
+        <script defer src="https://cloud.umami.is/script.js" data-website-id={process.env.NEXT_ANALYTICS_TOKEN}></script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -39,7 +41,7 @@ export default function RootLayout({
         >
           <Navbar />
           {children}
-          <Umami/>
+          <Umami />
         </ThemeProvider>
       </body>
     </html>
