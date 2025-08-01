@@ -27,6 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <script defer src="https://cloud.umami.is/script.js" data-website-id={process.env.NEXT_ANALYTICS_TOKEN}></script>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
