@@ -8,7 +8,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { CSS_DIRECTION_VALUES } from "@/lib/data/directions"
-// import DegreeSelector from "../degree-selector"
+import DegreeSelector from "../degree-selector"
 
 const Directions = () => {
     const setDirection = useGradientStore(s => s.setDirection);
@@ -22,7 +22,7 @@ const Directions = () => {
                 </div>
 
             </div>
-            {/* <DegreeSelector /> */}
+            <DegreeSelector />
             <div className="flex flex-col gap-2 w-full">
                 <Select onValueChange={setDirection} defaultValue={direction}>
                     <SelectTrigger className="w-full text-xs ">
