@@ -39,7 +39,7 @@ export const useGradientStore = create<GradientState>((set) => ({
   //percentage
   fromPercentage: 0,
   toPercentage: 100,
-  viaPercentage: undefined,
+  viaPercentage: 50,
   setFromPercentage: (percentage) => set({ fromPercentage: percentage }),
   setToPercentage: (percentage) => set({ toPercentage: percentage }),
   setViaPercentage: (percentage) => set({ viaPercentage: percentage }),

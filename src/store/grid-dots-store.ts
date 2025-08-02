@@ -26,7 +26,7 @@ export const useGridDotsStore = create<GridDotsState>((set) => ({
 
     addGrid: false,
     setAddGrid: (addGrid) => set({ addGrid }),
-    addDots: false,
+    addDots: true,
     setAddDots: (addDots) => set({ addDots }),
 
     // grid 
