@@ -20,6 +20,8 @@ interface GradientState {
   setToPercentage: (percentage: number) => void;
   setViaPercentage: (percentage?: number) => void;
 
+
+
 }
 
 export const useGradientStore = create<GradientState>((set) => ({
@@ -41,4 +43,6 @@ export const useGradientStore = create<GradientState>((set) => ({
   setFromPercentage: (percentage) => set({ fromPercentage: percentage }),
   setToPercentage: (percentage) => set({ toPercentage: percentage }),
   setViaPercentage: (percentage) => set({ viaPercentage: percentage }),
+
+
 }));

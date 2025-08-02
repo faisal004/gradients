@@ -7,16 +7,13 @@ import { Copy, Check } from "lucide-react"
 import { useGradientStore } from "../store/gradient-store"
 import convertCSSDirectionToTailwindDirection from "@/lib/functions/convert-css-to-tailwind-dir"
 import convertToTailwind from "@/lib/functions/convert-to-tailwind"
+import { useGridDotsStore } from "@/store/grid-dots-store"
 
 const GradientCopyButton = () => {
     const [isCopied, setIsCopied] = useState(false)
-    const from = useGradientStore(s => s.from);
-    const to = useGradientStore(s => s.to);
-    const via = useGradientStore(s => s.via);
-    const direction = useGradientStore(s => s.direction);
-    const fromPercentage = useGradientStore(s => s.fromPercentage);
-    const toPercentage = useGradientStore(s => s.toPercentage);
-    const viaPercentage = useGradientStore(s => s.viaPercentage);
+    const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage } = useGradientStore();
+    const { addDots, addGrid, gridSize, dotsSize, gridColor, dotsColor } = useGridDotsStore();
+
 
     const copy = () => {
         const tailwindDirection = convertCSSDirectionToTailwindDirection(direction)
@@ -28,7 +25,13 @@ const GradientCopyButton = () => {
             direction: tailwindDirection,
             fromPercentage,
             toPercentage,
-            viaPercentage
+            viaPercentage,
+            addGrid,
+            addDots,
+            gridSize,
+            dotsSize,
+            gridColor,
+            dotsColor
         })
         navigator.clipboard.writeText(tailwind)
         setIsCopied(true)

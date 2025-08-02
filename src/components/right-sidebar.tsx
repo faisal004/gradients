@@ -7,6 +7,7 @@ import { Button, buttonVariants } from "./ui/button"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import GradientRange from "./rightSidebar/gradient-rage"
+import GridsOrDots from "./rightSidebar/gridsOrDots"
 
 const RightSidebar = () => {
     return (
@@ -26,6 +27,7 @@ const RightSidebar = () => {
                 <Palette />
                 <Directions />
                 <GradientRange />
+                <GridsOrDots />
             </div>
         </div>
     )

@@ -1,15 +1,12 @@
-"use client"
+"use client";
+
 import { useGradientStore } from "../store/gradient-store";
 import GradientCopyButton from "./gradient-copy-button";
+import { useGridDotsStore } from "../store/grid-dots-store";
 
 const GradientScreen = () => {
-  const from = useGradientStore(s => s.from);
-  const to = useGradientStore(s => s.to);
-  const via = useGradientStore(s => s.via);
-  const direction = useGradientStore(s => s.direction);
-  const fromPercentage = useGradientStore(s => s.fromPercentage);
-  const toPercentage = useGradientStore(s => s.toPercentage);
-  const viaPercentage = useGradientStore(s => s.viaPercentage);
+  const { from,to,via,direction,fromPercentage,toPercentage,viaPercentage} = useGradientStore();
+  const {addGrid,addDots,gridSize,dotsSize,gridColor,dotsColor} = useGridDotsStore();
 
   const buildGradient = () => {
     const colorStops = [
@@ -21,23 +18,69 @@ const GradientScreen = () => {
     return `linear-gradient(to ${direction}, ${colorStops.join(', ')})`;
   };
 
+  const buildGrid = () => {
+    if (!addGrid && !addDots) return '';
+
+    if (addDots) {
+      return `
+        radial-gradient(circle, ${dotsColor} 1px, transparent 1px),
+        radial-gradient(circle, ${dotsColor} 1px, transparent 1px)
+      `.replace(/\s+/g, ' ').trim();
+    }
+
+    if (addGrid) {
+      return `
+        linear-gradient(to right, ${gridColor} 1px, transparent 1px),
+        linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)
+      `.replace(/\s+/g, ' ').trim();
+    }
+
+    return '';
+  };
+
+  const getBackgroundStyles = () => {
+    const gridPattern = buildGrid();
+    const gradient = buildGradient();
+
+    if (!gridPattern) {
+      return {
+        backgroundImage: gradient,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center'
+      };
+    }
+
+    const backgroundImages = [gridPattern, gradient].filter(Boolean);
+
+    return {
+      backgroundImage: backgroundImages.join(', '),
+      backgroundSize: addDots
+        ? `${dotsSize}px ${dotsSize}px, ${dotsSize}px ${dotsSize}px, cover`
+        : `${gridSize}px ${gridSize}px, ${gridSize}px ${gridSize}px, cover`,
+      backgroundRepeat: addDots
+        ? 'repeat, repeat, no-repeat'
+        : 'repeat, repeat, no-repeat',
+      backgroundPosition: 'center, center, center'
+    };
+  };
+
   return (
     <div className="h-full flex flex-col gap-2 md:gap-5 mt-6 md:mt-0 items-center justify-center">
       <div
-        className="aspect-[16/9] w-full max-w-[500px] max-h-[500px] border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-lg p-4 flex items-center justify-center"
-        style={{
-          backgroundImage: buildGradient(),
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-        }}
+        className="aspect-[16/9] w-full max-w-[500px] max-h-[500px] border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-lg p-4 flex items-center justify-center relative"
+        style={getBackgroundStyles()}
+        role="img"
+        aria-label={`Gradient preview with colors from ${from} to ${to}${via ? ` via ${via}` : ''}`}
       >
-        Keep building.
+          Keep building.
       </div>
+
       <div className="flex items-center justify-center">
         <GradientCopyButton />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default GradientScreen
+export default GradientScreen;

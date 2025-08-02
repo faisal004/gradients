@@ -9,6 +9,12 @@ interface ConvertToTailwindOptions {
   fromPercentage?: number;
   toPercentage?: number;
   viaPercentage?: number;
+  addGrid?: boolean;
+  addDots?: boolean;
+  gridSize?: number;
+  dotsSize?: number;
+  gridColor?: string;
+  dotsColor?: string;
 }
 
 const convertToTailwind = ({
@@ -19,39 +25,70 @@ const convertToTailwind = ({
   direction = "r",
   fromPercentage = 0,
   toPercentage = 100,
-  viaPercentage = 50
+  viaPercentage = 50,
+  addGrid = false,
+  addDots = false,
+  gridSize = 20,
+  dotsSize = 20,
+  gridColor = "#e5e7eb",
+  dotsColor = "#e5e7eb"
 }: ConvertToTailwindOptions): string => {
   const buildColorStops = () => {
     const stops = [
-      fromPercentage !== 0 ? `${from}_${fromPercentage}%` : from,
-      ...(via && via !== "" ? [viaPercentage !== 50 ? `${via}_${viaPercentage}%` : via] : []),
-      toPercentage !== 100 ? `${to}_${toPercentage}%` : to
+      fromPercentage !== 0 ? `${from} ${fromPercentage}%` : from,
+      ...(via && via !== "" ? [viaPercentage !== 50 ? `${via} ${viaPercentage}%` : via] : []),
+      toPercentage !== 100 ? `${to} ${toPercentage}%` : to
     ];
     return stops.join(',');
   };
 
-  switch (type) {
-    case "linear": {
-      const directionMap: Record<string, string> = {
-        't': '0deg',
-        'tr': '45deg', 
-        'r': '90deg',
-        'br': '135deg',
-        'b': '180deg',
-        'bl': '225deg',
-        'l': '270deg',
-        'tl': '315deg'
-      };
-      
-      const angle = directionMap[direction] || '90deg';
-      return `bg-[linear-gradient(${angle},${buildColorStops()})]`;
+  const buildCombinedBackground = () => {
+    const colorStops = buildColorStops();
+
+    switch (type) {
+      case "linear": {
+        const directionMap: Record<string, string> = {
+          't': '0deg',
+          'tr': '45deg',
+          'r': '90deg',
+          'br': '135deg',
+          'b': '180deg',
+          'bl': '225deg',
+          'l': '270deg',
+          'tl': '315deg'
+        };
+        const dir = directionMap[direction] || 'to right';
+
+        if (addGrid) {
+          return `
+          <div class="relative bg-[linear-gradient(${dir},${colorStops})] h-[100vh] w-[100vw]">
+          <div class="absolute inset-0 bg-[linear-gradient(to_right,${gridColor}_1px,transparent_1px),linear-gradient(to_bottom,${gridColor}_1px,transparent_1px)] bg-[size:${gridSize}px_${gridSize}px]"></div>
+          </div>`;
+        } else if (addDots) {
+          return `
+          <div class="relative bg-[linear-gradient(${dir},${colorStops})] h-[100vh] w-[100vw]">
+
+          <div class="absolute inset-0 bg-[radial-gradient(circle,${dotsColor}_1px,transparent_1px)] bg-[size:${dotsSize}px_${dotsSize}px]"></div>
+          </div>`;
+        } else {
+          return `bg-[linear-gradient(${dir},${colorStops})]`;
+        }
+      }
+      case "radial": {
+        if (addGrid) {
+          return `bg-[radial-gradient(circle,${colorStops}),linear-gradient(to_right,${gridColor}_1px,transparent_1px),linear-gradient(to_bottom,${gridColor}_1px,transparent_1px)] bg-[size:auto,${gridSize}px_${gridSize}px,${gridSize}px_${gridSize}px]`;
+        } else if (addDots) {
+          return `bg-[radial-gradient(circle,${colorStops}),radial-gradient(circle,${dotsColor}_1px,transparent_1px)] bg-[size:auto,${dotsSize}px_${dotsSize}px]`;
+        } else {
+          return `bg-[radial-gradient(circle,${colorStops})]`;
+        }
+      }
+      default:
+        return "";
     }
-    case "radial": {
-      return `bg-[radial-gradient(circle,${buildColorStops()})]`;
-    }
-    default:
-      return "";
-  }
+  };
+
+  return buildCombinedBackground();
 };
 
 export default convertToTailwind;
