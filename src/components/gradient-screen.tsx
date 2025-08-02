@@ -2,9 +2,11 @@
 
 import { useGradientStore } from "../store/gradient-store";
 import GradientCopyButton from "./gradient-copy-button";
+import { useGridDotsStore } from "../store/grid-dots-store";
 
 const GradientScreen = () => {
-  const { from,to,via,direction,fromPercentage,toPercentage,viaPercentage,addGrid,addDots} = useGradientStore();
+  const { from,to,via,direction,fromPercentage,toPercentage,viaPercentage} = useGradientStore();
+  const {addGrid,addDots} = useGridDotsStore();
 
   const buildGradient = () => {
     const colorStops = [

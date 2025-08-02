@@ -1,13 +1,15 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useGradientStore } from "@/store/gradient-store";
+import { useGridDotsStore } from "@/store/grid-dots-store";
 
 const GridsOrDots = () => {
-    const addGrid = useGradientStore(s => s.addGrid);
-    const setAddGrid = useGradientStore(s => s.setAddGrid);
-    const addDots = useGradientStore(s => s.addDots);
-    const setAddDots = useGradientStore(s => s.setAddDots);
+
+
+    const addGrid = useGridDotsStore(s => s.addGrid);
+    const setAddGrid = useGridDotsStore(s => s.setAddGrid);
+    const addDots = useGridDotsStore(s => s.addDots);
+    const setAddDots = useGridDotsStore(s => s.setAddDots);
 
 
     return (
@@ -26,10 +28,10 @@ const GridsOrDots = () => {
                 </TabsList>
                 <TabsContent value="account">
 
-                    <input className="size-5" type="checkbox" checked={addGrid} onChange={(e) => setAddGrid(!addGrid)} />
+                    <input className="size-5" type="checkbox" checked={addGrid} onChange={(e) => { if (addDots) { setAddDots(false) } setAddGrid(!addGrid) }} />
                 </TabsContent>
                 <TabsContent value="password">
-                    <input className="size-5" type="checkbox" checked={addDots} onChange={(e) => setAddDots(!addDots)} />
+                    <input className="size-5" type="checkbox" checked={addDots} onChange={(e) => { if (addGrid) { setAddGrid(false) } setAddDots(!addDots) }} />
                 </TabsContent>
             </Tabs>
         </div>
