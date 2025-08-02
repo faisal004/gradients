@@ -7,6 +7,7 @@ import { Button, buttonVariants } from "./ui/button"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import GradientRange from "./rightSidebar/gradient-rage"
+import GridsOrDots from "./rightSidebar/gridsOrDots"
 
 const RightSidebar = () => {
     return (
@@ -23,9 +24,10 @@ const RightSidebar = () => {
             </div>
             </div>
             <div className="flex flex-col gap-2 w-full">
-                <Palette />
+                {/* <Palette />
                 <Directions />
-                <GradientRange />
+                <GradientRange /> */}
+                <GridsOrDots />
             </div>
         </div>
     )

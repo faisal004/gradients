@@ -20,6 +20,13 @@ interface GradientState {
   setToPercentage: (percentage: number) => void;
   setViaPercentage: (percentage?: number) => void;
 
+
+  //grids or dots
+  addGrid: boolean;
+  setAddGrid: (addGrid: boolean) => void;
+  addDots: boolean;
+  setAddDots: (addDots: boolean) => void;
+
 }
 
 export const useGradientStore = create<GradientState>((set) => ({
@@ -41,4 +48,10 @@ export const useGradientStore = create<GradientState>((set) => ({
   setFromPercentage: (percentage) => set({ fromPercentage: percentage }),
   setToPercentage: (percentage) => set({ toPercentage: percentage }),
   setViaPercentage: (percentage) => set({ viaPercentage: percentage }),
+
+  //grids or dots
+  addGrid: false,
+  setAddGrid: (addGrid) => set({ addGrid }),
+  addDots: false,
+  setAddDots: (addDots) => set({ addDots }),
 }));
