@@ -6,7 +6,7 @@ import { useGridDotsStore } from "../store/grid-dots-store";
 
 const GradientScreen = () => {
   const { from,to,via,direction,fromPercentage,toPercentage,viaPercentage} = useGradientStore();
-  const {addGrid,addDots} = useGridDotsStore();
+  const {addGrid,addDots,gridSize,dotsSize,gridColor,dotsColor} = useGridDotsStore();
 
   const buildGradient = () => {
     const colorStops = [
@@ -23,15 +23,15 @@ const GradientScreen = () => {
 
     if (addDots) {
       return `
-        radial-gradient(circle, #e5e7eb 1px, transparent 1px),
-        radial-gradient(circle, #e5e7eb 1px, transparent 1px)
+        radial-gradient(circle, ${dotsColor} 1px, transparent 1px),
+        radial-gradient(circle, ${dotsColor} 1px, transparent 1px)
       `.replace(/\s+/g, ' ').trim();
     }
 
     if (addGrid) {
       return `
-        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)
+        linear-gradient(to right, ${gridColor} 1px, transparent 1px),
+        linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)
       `.replace(/\s+/g, ' ').trim();
     }
 
@@ -56,8 +56,8 @@ const GradientScreen = () => {
     return {
       backgroundImage: backgroundImages.join(', '),
       backgroundSize: addDots
-        ? '20px 20px, 20px 20px, cover'
-        : '60px 60px, 60px 60px, cover',
+        ? `${dotsSize}px ${dotsSize}px, ${dotsSize}px ${dotsSize}px, cover`
+        : `${gridSize}px ${gridSize}px, ${gridSize}px ${gridSize}px, cover`,
       backgroundRepeat: addDots
         ? 'repeat, repeat, no-repeat'
         : 'repeat, repeat, no-repeat',

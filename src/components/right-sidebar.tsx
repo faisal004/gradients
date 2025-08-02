@@ -24,9 +24,9 @@ const RightSidebar = () => {
             </div>
             </div>
             <div className="flex flex-col gap-2 w-full">
-                {/* <Palette />
+                <Palette />
                 <Directions />
-                <GradientRange /> */}
+                <GradientRange />
                 <GridsOrDots />
             </div>
         </div>
