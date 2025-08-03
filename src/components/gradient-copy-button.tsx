@@ -43,7 +43,9 @@ const GradientCopyButton = () => {
     return (
         <Button
             onClick={copy}
+            className="cursor-pointer"
             asChild
+            
         >
             <motion.button
                 whileTap={{ scale: 0.95 }}
@@ -72,6 +74,9 @@ const GradientCopyButton = () => {
                         </motion.div>
                     )}
                 </AnimatePresence>
+                <div>
+                     Tailwind CSS
+                </div>
             </motion.button>
         </Button>
     )

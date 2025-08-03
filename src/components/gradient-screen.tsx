@@ -82,6 +82,7 @@ const GradientScreen = () => {
 
       <div className="flex items-center justify-center">
         <GradientCopyButton />
+        
       </div>
     </div>
   );
