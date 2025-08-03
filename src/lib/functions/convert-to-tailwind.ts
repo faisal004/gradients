@@ -37,9 +37,9 @@ const convertToTailwind = ({
 }: ConvertToTailwindOptions): string => {
   const buildColorStops = () => {
     const stops = [
-      fromPercentage !== 0 ? `${from} ${fromPercentage}%` : from,
-      ...(via && via !== "" ? [viaPercentage !== 50 ? `${via} ${viaPercentage}%` : via] : []),
-      toPercentage !== 100 ? `${to} ${toPercentage}%` : to
+      fromPercentage !== 0 ? `${from}_${fromPercentage}%` : from,
+      ...(via && via !== "" ? [viaPercentage !== 50 ? `${via}_${viaPercentage}%` : via] : []),
+      toPercentage !== 100 ? `${to}_${toPercentage}%` : to
     ];
     return stops.join(',');
   };
