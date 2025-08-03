@@ -13,7 +13,7 @@ export default function Home() {
       mask-r-from-80% mask-b-from-80% mask-radial-from-0% mask-radial-to-90%"
       ></div>
 
-      <div className="row-span-4 md:col-span-9 z-10">
+      <div className="row-span-4 md:col-span-9 z-10 mt-6 md:mt-0">
         <GradientScreen />
  
       </div>
