@@ -1,4 +1,4 @@
-type GradientType = "linear" | "radial";
+export  type GradientType = "linear" | "radial";
 
 interface ConvertToTailwindOptions {
   type: GradientType;
@@ -15,6 +15,7 @@ interface ConvertToTailwindOptions {
   dotsSize?: number;
   gridColor?: string;
   dotsColor?: string;
+  radialShape?: string;
 }
 
 const convertToTailwind = ({
@@ -31,13 +32,14 @@ const convertToTailwind = ({
   gridSize = 20,
   dotsSize = 20,
   gridColor = "#e5e7eb",
-  dotsColor = "#e5e7eb"
+  dotsColor = "#e5e7eb",
+  radialShape = "circle"
 }: ConvertToTailwindOptions): string => {
   const buildColorStops = () => {
     const stops = [
-      fromPercentage !== 0 ? `${from} ${fromPercentage}%` : from,
-      ...(via && via !== "" ? [viaPercentage !== 50 ? `${via} ${viaPercentage}%` : via] : []),
-      toPercentage !== 100 ? `${to} ${toPercentage}%` : to
+      fromPercentage !== 0 ? `${from}_${fromPercentage}%` : from,
+      ...(via && via !== "" ? [viaPercentage !== 50 ? `${via}_${viaPercentage}%` : via] : []),
+      toPercentage !== 100 ? `${to}_${toPercentage}%` : to
     ];
     return stops.join(',');
   };
@@ -76,11 +78,17 @@ const convertToTailwind = ({
       }
       case "radial": {
         if (addGrid) {
-          return `bg-[radial-gradient(circle,${colorStops}),linear-gradient(to_right,${gridColor}_1px,transparent_1px),linear-gradient(to_bottom,${gridColor}_1px,transparent_1px)] bg-[size:auto,${gridSize}px_${gridSize}px,${gridSize}px_${gridSize}px]`;
+          return `
+          <div class="relative bg-[radial-gradient(${radialShape},${colorStops})] h-[100vh] w-[100vw]">
+          <div class="absolute inset-0 bg-[linear-gradient(to_right,${gridColor}_1px,transparent_1px),linear-gradient(to_bottom,${gridColor}_1px,transparent_1px)] bg-[size:${gridSize}px_${gridSize}px]"></div>
+          </div>`;
         } else if (addDots) {
-          return `bg-[radial-gradient(circle,${colorStops}),radial-gradient(circle,${dotsColor}_1px,transparent_1px)] bg-[size:auto,${dotsSize}px_${dotsSize}px]`;
+          return `
+          <div class="relative bg-[radial-gradient(${radialShape},${colorStops})] h-[100vh] w-[100vw]">
+          <div class="absolute inset-0 bg-[radial-gradient(circle,${dotsColor}_1px,transparent_1px)] bg-[size:${dotsSize}px_${dotsSize}px]"></div>
+          </div>`;
         } else {
-          return `bg-[radial-gradient(circle,${colorStops})]`;
+          return `bg-[radial-gradient(${radialShape},${colorStops})]`;
         }
       }
       default:

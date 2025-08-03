@@ -2,18 +2,11 @@
 import { useGradientStore } from "../../store/gradient-store"
 
 import AnimatedSlider from "../percentage-slider"
-import { motion, AnimatePresence } from "framer-motion"
 
 const GradientRange = () => {
 
+    const {addVia,fromPercentage,toPercentage,viaPercentage,setFromPercentage,setToPercentage,setViaPercentage} = useGradientStore();
 
-    const addVia = useGradientStore(s => s.addVia);
-    const fromPercentage = useGradientStore(s => s.fromPercentage);
-    const toPercentage = useGradientStore(s => s.toPercentage);
-    const viaPercentage = useGradientStore(s => s.viaPercentage);
-    const setFromPercentage = useGradientStore(s => s.setFromPercentage);
-    const setToPercentage = useGradientStore(s => s.setToPercentage);
-    const setViaPercentage = useGradientStore(s => s.setViaPercentage);
     return (
 
         <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">

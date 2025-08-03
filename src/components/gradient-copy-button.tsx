@@ -11,14 +11,14 @@ import { useGridDotsStore } from "@/store/grid-dots-store"
 
 const GradientCopyButton = () => {
     const [isCopied, setIsCopied] = useState(false)
-    const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage } = useGradientStore();
+    const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage ,gradientType,radialShape} = useGradientStore();
     const { addDots, addGrid, gridSize, dotsSize, gridColor, dotsColor } = useGridDotsStore();
 
 
     const copy = () => {
         const tailwindDirection = convertCSSDirectionToTailwindDirection(direction)
         const tailwind = convertToTailwind({
-            type: "linear",
+            type: gradientType,
             from,
             to,
             via,
@@ -31,7 +31,8 @@ const GradientCopyButton = () => {
             gridSize,
             dotsSize,
             gridColor,
-            dotsColor
+            dotsColor,
+            radialShape
         })
         navigator.clipboard.writeText(tailwind)
         setIsCopied(true)

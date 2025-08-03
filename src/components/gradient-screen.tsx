@@ -5,9 +5,8 @@ import GradientCopyButton from "./gradient-copy-button";
 import { useGridDotsStore } from "../store/grid-dots-store";
 
 const GradientScreen = () => {
-  const { from,to,via,direction,fromPercentage,toPercentage,viaPercentage} = useGradientStore();
-  const {addGrid,addDots,gridSize,dotsSize,gridColor,dotsColor} = useGridDotsStore();
-
+  const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage, gradientType, radialShape } = useGradientStore();
+  const { addGrid, addDots, gridSize, dotsSize, gridColor, dotsColor } = useGridDotsStore();
   const buildGradient = () => {
     const colorStops = [
       `${from} ${fromPercentage}%`,
@@ -15,7 +14,12 @@ const GradientScreen = () => {
       `${to} ${toPercentage}%`
     ];
 
-    return `linear-gradient(to ${direction}, ${colorStops.join(', ')})`;
+    switch (gradientType) {
+      case "linear":
+        return `linear-gradient(to ${direction}, ${colorStops.join(',')})`;
+      case "radial":
+        return `radial-gradient(${radialShape}, ${colorStops.join(',')})`;
+    }
   };
 
   const buildGrid = () => {
@@ -73,7 +77,7 @@ const GradientScreen = () => {
         role="img"
         aria-label={`Gradient preview with colors from ${from} to ${to}${via ? ` via ${via}` : ''}`}
       >
-          Keep building.
+        Keep building.
       </div>
 
       <div className="flex items-center justify-center">

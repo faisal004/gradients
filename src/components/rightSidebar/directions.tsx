@@ -8,34 +8,62 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { CSS_DIRECTION_VALUES } from "@/lib/data/directions"
-// import DegreeSelector from "../degree-selector"
 
 const Directions = () => {
-    const setDirection = useGradientStore(s => s.setDirection);
-    const direction = useGradientStore(s => s.direction);
+    const { gradientType, setGradientType, direction, setDirection,radialShape,setRadialShape } = useGradientStore();
     return (
 
         <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
-            <div className="flex items-center justify-between w-full text-sm px-1">
-                <div className=" font-bold tracking-widest">
-                    Gradient Direction
-                </div>
-
-            </div>
-            {/* <DegreeSelector /> */}
+           
             <div className="flex flex-col gap-2 w-full">
-                <Select onValueChange={setDirection} defaultValue={direction}>
+                <div className="font-bold text-sm w-full text-left">
+                    Gradient Type
+                </div>
+                <Select onValueChange={setGradientType} defaultValue={gradientType}>
                     <SelectTrigger className="w-full text-xs ">
-                        <SelectValue placeholder="Select a direction" />
+                        <SelectValue placeholder="Select Gradient Type" />
                     </SelectTrigger>
                     <SelectContent>
-                        {Object.entries(CSS_DIRECTION_VALUES).map(([value, label]) => (
-                            <SelectItem key={value} value={value}>
-                                {label}
-                            </SelectItem>
-                        ))}
+                        <SelectItem value="linear">Linear</SelectItem>
+                        <SelectItem value="radial">Radial</SelectItem>
                     </SelectContent>
                 </Select>
+                {gradientType === "radial" &&
+                    <div className="flex flex-col gap-2 w-full">
+                        <div className="font-bold text-sm w-full text-left">
+                            Radial Shape
+                        </div>
+                        <Select onValueChange={setRadialShape} defaultValue={radialShape}>
+                            <SelectTrigger className="w-full text-xs ">
+                                <SelectValue placeholder="Select a radial shape" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="circle">Circle</SelectItem>
+                              <SelectItem value="ellipse">Ellipse</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                }
+                {gradientType === "linear" &&
+                    <div className="flex flex-col gap-2 w-full">
+                        <div className="font-bold text-sm w-full text-left">
+                            Gradient Type
+                        </div>
+                        <Select onValueChange={setDirection} defaultValue={direction}>
+                            <SelectTrigger className="w-full text-xs ">
+                                <SelectValue placeholder="Select a direction" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {Object.entries(CSS_DIRECTION_VALUES).map(([value, label]) => (
+                                    <SelectItem key={value} value={value}>
+                                        {label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                }
+
 
             </div>
         </div>
