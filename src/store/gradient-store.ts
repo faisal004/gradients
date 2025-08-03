@@ -25,6 +25,8 @@ interface GradientState {
   //gradientType
   gradientType: GradientType;
   setGradientType: (gradientType: GradientType) => void;
+  radialShape: "circle" | "ellipse";
+  setRadialShape: (radialShape: string) => void;
 
 
 }
@@ -52,5 +54,9 @@ export const useGradientStore = create<GradientState>((set) => ({
   //gradientType
   gradientType: "linear",
   setGradientType: (gradientType) => set({ gradientType }),
+
+  //radialShape
+  radialShape: "circle",
+  setRadialShape: (radialShape) => set({ radialShape : radialShape as "circle" | "ellipse" }),
 
 }));
