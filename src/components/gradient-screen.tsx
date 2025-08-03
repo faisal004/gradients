@@ -3,6 +3,7 @@
 import { useGradientStore } from "../store/gradient-store";
 import GradientCopyButton from "./gradient-copy-button";
 import { useGridDotsStore } from "../store/grid-dots-store";
+import CssGradientCopyButton from "./css-gradient-copy";
 
 const GradientScreen = () => {
   const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage, gradientType, radialShape, shapePosition } = useGradientStore();
@@ -80,9 +81,10 @@ const GradientScreen = () => {
         Keep building.
       </div>
 
-      <div className="flex items-center justify-center">
+      <div className="flex gap-2 items-center justify-center">
         <GradientCopyButton />
-        
+
+        <CssGradientCopyButton />
       </div>
     </div>
   );
