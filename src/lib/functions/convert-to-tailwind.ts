@@ -1,4 +1,4 @@
-type GradientType = "linear" | "radial";
+export  type GradientType = "linear" | "radial";
 
 interface ConvertToTailwindOptions {
   type: GradientType;
@@ -76,9 +76,15 @@ const convertToTailwind = ({
       }
       case "radial": {
         if (addGrid) {
-          return `bg-[radial-gradient(circle,${colorStops}),linear-gradient(to_right,${gridColor}_1px,transparent_1px),linear-gradient(to_bottom,${gridColor}_1px,transparent_1px)] bg-[size:auto,${gridSize}px_${gridSize}px,${gridSize}px_${gridSize}px]`;
+          return `
+          <div class="relative bg-[radial-gradient(circle,${colorStops})] h-[100vh] w-[100vw]">
+          <div class="absolute inset-0 bg-[linear-gradient(to_right,${gridColor}_1px,transparent_1px),linear-gradient(to_bottom,${gridColor}_1px,transparent_1px)] bg-[size:${gridSize}px_${gridSize}px]"></div>
+          </div>`;
         } else if (addDots) {
-          return `bg-[radial-gradient(circle,${colorStops}),radial-gradient(circle,${dotsColor}_1px,transparent_1px)] bg-[size:auto,${dotsSize}px_${dotsSize}px]`;
+          return `
+          <div class="relative bg-[radial-gradient(circle,${colorStops})] h-[100vh] w-[100vw]">
+          <div class="absolute inset-0 bg-[radial-gradient(circle,${dotsColor}_1px,transparent_1px)] bg-[size:${dotsSize}px_${dotsSize}px]"></div>
+          </div>`;
         } else {
           return `bg-[radial-gradient(circle,${colorStops})]`;
         }

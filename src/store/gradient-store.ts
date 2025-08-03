@@ -1,3 +1,4 @@
+import { GradientType } from '@/lib/functions/convert-to-tailwind';
 import { create } from 'zustand';
 
 interface GradientState {
@@ -20,6 +21,10 @@ interface GradientState {
   setToPercentage: (percentage: number) => void;
   setViaPercentage: (percentage?: number) => void;
 
+
+  //gradientType
+  gradientType: GradientType;
+  setGradientType: (gradientType: GradientType) => void;
 
 
 }
@@ -44,5 +49,8 @@ export const useGradientStore = create<GradientState>((set) => ({
   setToPercentage: (percentage) => set({ toPercentage: percentage }),
   setViaPercentage: (percentage) => set({ viaPercentage: percentage }),
 
+  //gradientType
+  gradientType: "linear",
+  setGradientType: (gradientType) => set({ gradientType }),
 
 }));
