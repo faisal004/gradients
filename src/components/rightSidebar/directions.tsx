@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import PointSelector from "../custom-ui/axis-selector"
 
 const Directions = () => {
-    const { gradientType, setGradientType, direction, setDirection, radialShape, setRadialShape } = useGradientStore();
+    const { gradientType, setGradientType, direction, setDirection, radialShape, setRadialShape, shapePosition, setShapePosition } = useGradientStore();
     return (
 
         <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
@@ -54,12 +54,10 @@ const Directions = () => {
                                 </Select>
                             </div>
                             <div
-                                className=" mt-3"
+                                className=" mt-5"
                             >
-                                <div className="font-bold text-sm w-full text-left">
-                                    Shape Position
-                                </div>
-                                <PointSelector />
+                                
+                                <PointSelector position={shapePosition} setPosition={setShapePosition} />
                             </div>
                         </motion.div>
                     )}

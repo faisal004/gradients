@@ -5,7 +5,7 @@ import GradientCopyButton from "./gradient-copy-button";
 import { useGridDotsStore } from "../store/grid-dots-store";
 
 const GradientScreen = () => {
-  const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage, gradientType, radialShape } = useGradientStore();
+  const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage, gradientType, radialShape, shapePosition } = useGradientStore();
   const { addGrid, addDots, gridSize, dotsSize, gridColor, dotsColor } = useGridDotsStore();
   const buildGradient = () => {
     const colorStops = [
@@ -18,7 +18,7 @@ const GradientScreen = () => {
       case "linear":
         return `linear-gradient(to ${direction}, ${colorStops.join(',')})`;
       case "radial":
-        return `radial-gradient(${radialShape}, ${colorStops.join(',')})`;
+        return `radial-gradient(${radialShape} at ${shapePosition.x}% ${shapePosition.y}%, ${colorStops.join(',')})`;
     }
   };
 

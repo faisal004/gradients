@@ -28,6 +28,10 @@ interface GradientState {
   radialShape: "circle" | "ellipse";
   setRadialShape: (radialShape: string) => void;
 
+  // shape position
+  shapePosition: { x: number; y: number };
+  setShapePosition: (position: { x: number; y: number }) => void;
+
 
 }
 
@@ -58,5 +62,9 @@ export const useGradientStore = create<GradientState>((set) => ({
   //radialShape
   radialShape: "circle",
   setRadialShape: (radialShape) => set({ radialShape : radialShape as "circle" | "ellipse" }),
+
+  // shape position
+  shapePosition: { x: 50, y: 50 },
+  setShapePosition: (position) => set({ shapePosition: position }),
 
 }));
