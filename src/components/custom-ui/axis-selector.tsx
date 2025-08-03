@@ -1,10 +1,65 @@
 import React, { useState, useRef, useCallback } from 'react';
 
+const Point = ({ position, isDragging, containerRef }: any) => {
+    const [size, setSize] = React.useState({ width: 0, height: 0 });
+    React.useLayoutEffect(() => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setSize({ width: rect.width, height: rect.height });
+      }
+    }, [containerRef.current]);
+    const left = (position.x / 200) * size.width;
+    const top = ((200 - position.y) / 200) * size.height;
+    return (
+      <div
+        className={`absolute z-50 w-6 h-6 bg-red-500 border-2 border-white rounded-full shadow-lg transform -translate-x-3 -translate-y-3  ${
+          isDragging ? 'scale-125 bg-red-600' : 'hover:scale-110'
+        }`}
+        style={{
+          left,
+          top,
+          cursor: isDragging ? 'grabbing' : 'grab',
+        }}
+      >
+       
+      </div>
+    );
+  };
+  
+  const Crosshairs = ({ position, isDragging, containerRef }: any) => {
+    const [size, setSize] = React.useState({ width: 0, height: 0 });
+    React.useLayoutEffect(() => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setSize({ width: rect.width, height: rect.height });
+      }
+    }, [containerRef.current]);
+    const left = (position.x / 200) * size.width;
+    // For bottom-left origin, flip the y coordinate
+    const top = ((200 - position.y) / 200) * size.height;
+    if (!isDragging) return null;
+    return (
+      <>
+        <div
+          className="absolute top-0 bottom-0 w-px bg-red-300 opacity-60 pointer-events-none"
+          style={{ left }}
+        />
+        <div
+          className="absolute left-0 right-0 h-px bg-red-300 opacity-60 pointer-events-none"
+          style={{ top }}
+        />
+      </>
+    );
+  };
+  
 
-const  PointSelector=()=> {
-  const [position, setPosition] = useState({ x: 150, y: 100 });
+
+const PointSelector = () => {
+  const [position, setPosition] = useState({ x: 100, y: 100 }); // percent, 0-200
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const clamp = (val: number) => Math.max(0, Math.min(val, 200));
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setIsDragging(true);
@@ -24,11 +79,15 @@ const  PointSelector=()=> {
   const updatePosition = (e: MouseEvent) => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-      const y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
-      setPosition({ x: Math.round(x), y: Math.round(y) });
+      let x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+      let y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
+      const xPercent = clamp(Math.round((x / rect.width) * 200));
+      const yPercent = clamp(Math.round(((rect.height - y) / rect.height) * 200));
+      setPosition({ x: xPercent, y: yPercent });
     }
   };
+
+  const getPxFromPercent = (percent: number, size: number) => (percent / 200) * size;
 
   React.useEffect(() => {
     if (isDragging) {
@@ -42,95 +101,40 @@ const  PointSelector=()=> {
   }, [isDragging, handleMouseMove]);
 
   return (
-      <div className="max-w-4xl mx-auto my-2">
-      
-        <div className="bg-white rounded-lg">
-          <div
-            ref={containerRef}
-            className="relative w-full h-60 bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-gray-300 rounded-lg cursor-crosshair overflow-hidden"
-            onMouseDown={handleMouseDown}
-            style={{ userSelect: 'none' }}
-          >
-            {/* Grid lines for reference */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
-              {/* Vertical grid lines */}
-              {Array.from({ length: 10 }, (_, i) => (
-                <line
-                  key={`v-${i}`}
-                  x1={`${(i + 1) * 10}%`}
-                  y1="0"
-                  x2={`${(i + 1) * 10}%`}
-                  y2="100%"
-                  stroke="#6b7280"
-                  strokeWidth="1"
-                />
-              ))}
-              {/* Horizontal grid lines */}
-              {Array.from({ length: 10 }, (_, i) => (
-                <line
-                  key={`h-${i}`}
-                  x1="0"
-                  y1={`${(i + 1) * 10}%`}
-                  x2="100%"
-                  y2={`${(i + 1) * 10}%`}
-                  stroke="#6b7280"
-                  strokeWidth="1"
-                />
-              ))}
-            </svg>
-
-            {/* Coordinate labels */}
-            <div className="absolute top-2 left-2 text-xs text-gray-500 font-mono">
-              (0, 0)
-            </div>
-            <div className="absolute top-2 right-2 text-xs text-gray-500 font-mono">
-              (width, 0)
-            </div>
-            <div className="absolute bottom-2 left-2 text-xs text-gray-500 font-mono">
-              (0, height)
-            </div>
-            <div className="absolute bottom-2 right-2 text-xs text-gray-500 font-mono">
-              (width, height)
-            </div>
-
-            {/* Draggable Point */}
-            <div
-              className={`absolute w-6 h-6 bg-red-500 border-2 border-white rounded-full shadow-lg transform -translate-x-3 -translate-y-3 transition-all duration-75 ${
-                isDragging ? 'scale-125 bg-red-600' : 'hover:scale-110'
-              }`}
-              style={{
-                left: `${position.x}px`,
-                top: `${position.y}px`,
-                cursor: isDragging ? 'grabbing' : 'grab'
-              }}
-            >
-              {/* Point coordinates tooltip */}
-              <div className="absolute -top-10 left-1/2 transform  -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                {position.x}, {position.y}
-              </div>
-            </div>
-
-            {/* Cross-hair lines when dragging */}
-            {isDragging && (
-              <>
-                {/* Vertical line */}
-                <div
-                  className="absolute top-0 bottom-0 w-px bg-red-300 opacity-60 pointer-events-none"
-                  style={{ left: `${position.x}px` }}
-                />
-                {/* Horizontal line */}
-                <div
-                  className="absolute left-0 right-0 h-px bg-red-300 opacity-60 pointer-events-none"
-                  style={{ top: `${position.y}px` }}
-                />
-              </>
-            )}
+    <div className="max-w-4xl mx-auto my-2">
+      <div className="dark:bg-black bg-white rounded-lg">
+        <div
+          ref={containerRef}
+          className="relative w-full h-60 border-2 dark:border-zinc-800 border-zinc-200 rounded-lg cursor-crosshair overflow-hidden"
+          onMouseDown={handleMouseDown}
+          style={{ userSelect: 'none' }}
+        >
+       <div className="absolute inset-0 
+       dark:bg-[radial-gradient(circle,#e5e7eb_1px,transparent_1px)] 
+       bg-[radial-gradient(circle,#000000_1px,transparent_1px)]
+       bg-[size:20px_20px]"></div>
+          {/* <div className="absolute bottom-2 left-2 text-xs text-zinc-800 font-mono">
+            (0%, 0%)
           </div>
-        </div>
+          <div className="absolute bottom-2 right-2 text-xs text-zinc-800 font-mono">
+            (200%, 0%)
+          </div>
+          <div className="absolute top-2 left-2 text-xs text-zinc-800 font-mono">
+            (0%, 200%)
+          </div>
+          <div className="absolute top-2 right-2 text-xs text-zinc-800 font-mono">
+            (200%, 200%)
+          </div> */}
 
-       
+          <Point position={position} isDragging={isDragging} containerRef={containerRef} />
+
+          <Crosshairs position={position} isDragging={isDragging} containerRef={containerRef} />
+        </div>
       </div>
+      <div className=" flex mt-3 items-center justify-center">  
+            {position.x}% {position.y}%
+      </div>
+    </div>
   );
 }
-
 export default PointSelector

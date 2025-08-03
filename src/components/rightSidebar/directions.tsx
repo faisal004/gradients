@@ -8,8 +8,8 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { CSS_DIRECTION_VALUES } from "@/lib/data/directions"
-import PointSelector from "../custom-ui/axis-selector"
 import { motion, AnimatePresence } from "framer-motion"
+import PointSelector from "../custom-ui/axis-selector"
 
 const Directions = () => {
     const { gradientType, setGradientType, direction, setDirection, radialShape, setRadialShape } = useGradientStore();
@@ -53,9 +53,14 @@ const Directions = () => {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <motion.div>
+                            <div
+                                className=" mt-3"
+                            >
+                                <div className="font-bold text-sm w-full text-left">
+                                    Shape Position
+                                </div>
                                 <PointSelector />
-                            </motion.div>
+                            </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -63,7 +68,7 @@ const Directions = () => {
                 {gradientType === "linear" &&
                     <div className="flex flex-col gap-2 w-full">
                         <div className="font-bold text-sm w-full text-left">
-                            Gradient Type
+                            Gradient Direction
                         </div>
                         <Select onValueChange={setDirection} defaultValue={direction}>
                             <SelectTrigger className="w-full text-xs ">
