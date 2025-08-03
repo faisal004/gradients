@@ -16,6 +16,7 @@ interface ConvertToTailwindOptions {
   gridColor?: string;
   dotsColor?: string;
   radialShape?: string;
+  shapePosition?: { x: number; y: number };
 }
 
 const convertToTailwind = ({
@@ -33,7 +34,8 @@ const convertToTailwind = ({
   dotsSize = 20,
   gridColor = "#e5e7eb",
   dotsColor = "#e5e7eb",
-  radialShape = "circle"
+  radialShape = "circle",
+  shapePosition = { x: 50, y: 50 }
 }: ConvertToTailwindOptions): string => {
   const buildColorStops = () => {
     const stops = [
@@ -79,16 +81,16 @@ const convertToTailwind = ({
       case "radial": {
         if (addGrid) {
           return `
-          <div class="relative bg-[radial-gradient(${radialShape},${colorStops})] h-[100vh] w-[100vw]">
+          <div class="relative bg-[radial-gradient(${radialShape}_at_${Math.round(shapePosition.x)}%_${Math.round(shapePosition.y)}%,${colorStops})] h-[100vh] w-[100vw]">
           <div class="absolute inset-0 bg-[linear-gradient(to_right,${gridColor}_1px,transparent_1px),linear-gradient(to_bottom,${gridColor}_1px,transparent_1px)] bg-[size:${gridSize}px_${gridSize}px]"></div>
           </div>`;
         } else if (addDots) {
           return `
-          <div class="relative bg-[radial-gradient(${radialShape},${colorStops})] h-[100vh] w-[100vw]">
+          <div class="relative bg-[radial-gradient(${radialShape}_at_${Math.round(shapePosition.x)}%_${Math.round(shapePosition.y)}%,${colorStops})] h-[100vh] w-[100vw]">
           <div class="absolute inset-0 bg-[radial-gradient(circle,${dotsColor}_1px,transparent_1px)] bg-[size:${dotsSize}px_${dotsSize}px]"></div>
           </div>`;
         } else {
-          return `bg-[radial-gradient(${radialShape},${colorStops})]`;
+          return `bg-[radial-gradient(${radialShape}_at_${Math.round(shapePosition.x)}%_${Math.round(shapePosition.y)}%,${colorStops})]`;
         }
       }
       default:

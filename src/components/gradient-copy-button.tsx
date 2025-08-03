@@ -11,7 +11,7 @@ import { useGridDotsStore } from "@/store/grid-dots-store"
 
 const GradientCopyButton = () => {
     const [isCopied, setIsCopied] = useState(false)
-    const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage ,gradientType,radialShape} = useGradientStore();
+    const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage ,gradientType,radialShape , shapePosition} = useGradientStore();
     const { addDots, addGrid, gridSize, dotsSize, gridColor, dotsColor } = useGridDotsStore();
 
 
@@ -32,7 +32,8 @@ const GradientCopyButton = () => {
             dotsSize,
             gridColor,
             dotsColor,
-            radialShape
+            radialShape,
+            shapePosition
         })
         navigator.clipboard.writeText(tailwind)
         setIsCopied(true)
