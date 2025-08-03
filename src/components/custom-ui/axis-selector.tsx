@@ -1,56 +1,60 @@
 import React, { useState, useRef, useCallback } from 'react';
 
+// Hook to track container size with ResizeObserver
+function useContainerSize(ref: React.RefObject<HTMLElement>) {
+  const [size, setSize] = React.useState({ width: 0, height: 0 });
+  React.useEffect(() => {
+    if (!ref.current) return;
+    const handleResize = () => {
+      const rect = ref.current!.getBoundingClientRect();
+      setSize({ width: rect.width, height: rect.height });
+    };
+    handleResize(); // Initial
+    const ro = new window.ResizeObserver(handleResize);
+    ro.observe(ref.current!);
+    return () => ro.disconnect();
+  }, [ref]);
+  return size;
+}
+
 const Point = ({ position, isDragging, containerRef }: any) => {
-    const [size, setSize] = React.useState({ width: 0, height: 0 });
-    React.useLayoutEffect(() => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setSize({ width: rect.width, height: rect.height });
-      }
-    }, [containerRef.current]);
-    const left = (position.x / 200) * size.width;
-    const top = ((200 - position.y) / 200) * size.height;
-    return (
-      <div
-        className={`absolute z-50 w-6 h-6 bg-red-500 border-2 border-white rounded-full shadow-lg transform -translate-x-3 -translate-y-3  ${
-          isDragging ? 'scale-125 bg-red-600' : 'hover:scale-110'
-        }`}
-        style={{
-          left,
-          top,
-          cursor: isDragging ? 'grabbing' : 'grab',
-        }}
-      >
-       
-      </div>
-    );
-  };
+  const size = useContainerSize(containerRef);
+  const left = (position.x / 200) * size.width;
+  const top = ((200 - position.y) / 200) * size.height;
+  return (
+    <div
+      className={`absolute z-50 w-6 h-6 bg-red-500 border-2 border-white rounded-full shadow-lg transform -translate-x-3 -translate-y-3  ${
+        isDragging ? 'scale-125 bg-red-600' : 'hover:scale-110'
+      }`}
+      style={{
+        left,
+        top,
+        cursor: isDragging ? 'grabbing' : 'grab',
+      }}
+    >
+      
+    </div>
+  );
+};
   
-  const Crosshairs = ({ position, isDragging, containerRef }: any) => {
-    const [size, setSize] = React.useState({ width: 0, height: 0 });
-    React.useLayoutEffect(() => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setSize({ width: rect.width, height: rect.height });
-      }
-    }, [containerRef.current]);
-    const left = (position.x / 200) * size.width;
-    // For bottom-left origin, flip the y coordinate
-    const top = ((200 - position.y) / 200) * size.height;
-    if (!isDragging) return null;
-    return (
-      <>
-        <div
-          className="absolute top-0 bottom-0 w-px bg-red-300 opacity-60 pointer-events-none"
-          style={{ left }}
-        />
-        <div
-          className="absolute left-0 right-0 h-px bg-red-300 opacity-60 pointer-events-none"
-          style={{ top }}
-        />
-      </>
-    );
-  };
+const Crosshairs = ({ position, isDragging, containerRef }: any) => {
+  const size = useContainerSize(containerRef);
+  const left = (position.x / 200) * size.width;
+  const top = ((200 - position.y) / 200) * size.height;
+  if (!isDragging) return null;
+  return (
+    <>
+      <div
+        className="absolute top-0 bottom-0 w-px bg-red-300 opacity-60 pointer-events-none"
+        style={{ left }}
+      />
+      <div
+        className="absolute left-0 right-0 h-px bg-red-300 opacity-60 pointer-events-none"
+        style={{ top }}
+      />
+    </>
+  );
+};
   
 
 
