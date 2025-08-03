@@ -21,7 +21,7 @@ function useContainerSize(ref: React.RefObject<HTMLElement>) {
 const Point = ({ position, isDragging, containerRef }: any) => {
     const size = useContainerSize(containerRef);
     const left = (position.x / 200) * size.width;
-    const top = ((200 - position.y) / 200) * size.height;
+    const top = (position.y / 200) * size.height;
     return (
         <div
             className={`absolute z-50 w-6 h-6 bg-red-500 border-2 border-white rounded-full shadow-lg transform -translate-x-3 -translate-y-3  ${isDragging ? 'scale-125 bg-red-600' : 'hover:scale-110'
@@ -40,7 +40,7 @@ const Point = ({ position, isDragging, containerRef }: any) => {
 const Crosshairs = ({ position, isDragging, containerRef }: any) => {
     const size = useContainerSize(containerRef);
     const left = (position.x / 200) * size.width;
-    const top = ((200 - position.y) / 200) * size.height;
+    const top = (position.y / 200) * size.height;
     if (!isDragging) return null;
     return (
         <>
@@ -116,7 +116,7 @@ const PointSelector = ({ position, setPosition }: any) => {
             let x = Math.max(0, Math.min(clientX - rect.left, rect.width));
             let y = Math.max(0, Math.min(clientY - rect.top, rect.height));
             let xPercent = (x / rect.width) * 200;
-            let yPercent = ((rect.height - y) / rect.height) * 200;
+            let yPercent = (y / rect.height) * 200;
             if (mode === 'snappy') {
                 xPercent = snap(xPercent);
                 yPercent = snap(yPercent);
