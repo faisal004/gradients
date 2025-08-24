@@ -71,17 +71,24 @@ const GradientScreen = () => {
   };
 
   return (
-    <div className="h-full flex flex-col gap-2 md:gap-5 mt-6 md:mt-0  items-center justify-center"
-      style={getBackgroundStyles()}
-      role="img">
-
-      Keep building.
-
-
-      <div className="flex gap-2 items-center justify-center">
-        <GradientCopyButton />
-
-        <CssGradientCopyButton />
+    <div className="h-full flex flex-col gap-2 md:gap-5 mt-6 md:mt-0 items-center justify-center relative">
+      <div 
+        className="absolute inset-0"
+        style={{
+          ...getBackgroundStyles(),
+          WebkitMaskImage: "linear-gradient(black, transparent)",
+          maskImage: "radial-gradient(black, transparent)"
+        }}
+        role="img"
+      />
+      
+      <div className="relative z-10 flex flex-col gap-2 md:gap-5 items-center justify-center h-full text-4xl">
+        Keep building.
+        
+        <div className="flex gap-2 items-center mt-4 justify-center">
+          <GradientCopyButton />
+          <CssGradientCopyButton />
+        </div>
       </div>
     </div>
   );
