@@ -76,8 +76,14 @@ const GradientScreen = () => {
         className="absolute inset-0"
         style={{
           ...getBackgroundStyles(),
-          WebkitMaskImage: "linear-gradient(black, transparent)",
-          maskImage: "radial-gradient(black, transparent)"
+          WebkitMaskImage: "radial-gradient(circle at top, black 70%, transparent 100%)",
+          WebkitMaskRepeat: "no-repeat",
+          WebkitMaskSize: "100% 100%",
+          WebkitMaskPosition: "top",
+        
+          maskImage: "radial-gradient(circle at top, black 70%, transparent 100%)",
+          maskRepeat: "no-repeat",
+          maskSize: "100% 100%",
         }}
         role="img"
       />
