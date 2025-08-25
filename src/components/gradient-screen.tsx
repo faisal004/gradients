@@ -4,10 +4,13 @@ import { useGradientStore } from "../store/gradient-store";
 import GradientCopyButton from "./gradient-copy-button";
 import { useGridDotsStore } from "../store/grid-dots-store";
 import CssGradientCopyButton from "./css-gradient-copy";
+import { useMaskStore } from "@/store/masking-store";
 
 const GradientScreen = () => {
   const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage, gradientType, radialShape, shapePosition } = useGradientStore();
   const { addGrid, addDots, gridSize, dotsSize, gridColor, dotsColor } = useGridDotsStore();
+  const { addMask, buildMask, maskSize, maskRepeat } = useMaskStore(); // Use the mask store
+
   const buildGradient = () => {
     const colorStops = [
       `${from} ${fromPercentage}%`,
@@ -70,20 +73,30 @@ const GradientScreen = () => {
     };
   };
 
+  const getMaskStyles = () => {
+    if (!addMask) return {};
+    
+    const maskImage = buildMask();
+    
+    return {
+      WebkitMaskImage: maskImage,
+      WebkitMaskRepeat: maskRepeat,
+      WebkitMaskSize: maskSize,
+      WebkitMaskPosition: "center",
+      maskImage: maskImage,
+      maskRepeat: maskRepeat,
+      maskSize: maskSize,
+      maskPosition: "center"
+    };
+  };
+
   return (
     <div className="h-full flex flex-col gap-2 md:gap-5 mt-6 md:mt-0 items-center justify-center relative">
       <div 
         className="absolute inset-0"
         style={{
           ...getBackgroundStyles(),
-          WebkitMaskImage: "radial-gradient(circle at top, black 70%, transparent 100%)",
-          WebkitMaskRepeat: "no-repeat",
-          WebkitMaskSize: "100% 100%",
-          WebkitMaskPosition: "top",
-        
-          maskImage: "radial-gradient(circle at top, black 70%, transparent 100%)",
-          maskRepeat: "no-repeat",
-          maskSize: "100% 100%",
+          ...getMaskStyles() // Apply mask styles conditionally
         }}
         role="img"
       />
