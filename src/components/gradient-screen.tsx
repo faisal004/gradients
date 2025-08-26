@@ -77,6 +77,7 @@ const GradientScreen = () => {
     if (!addMask) return {};
     
     const maskImage = buildMask();
+    console.log(maskImage,"faisal")
     
     return {
       WebkitMaskImage: maskImage,

@@ -1,4 +1,3 @@
-import { Colorful } from "@uiw/react-color";
 import {
   Popover,
   PopoverContent,
@@ -6,6 +5,7 @@ import {
 } from "@/components/ui/popover"
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { HexAlphaColorPicker } from "react-colorful";
 
 interface ColorPickerProps {
   label: string;
@@ -24,12 +24,13 @@ const ColorPicker = ({ label, value, onChange }: ColorPickerProps) => (
           style={{ backgroundColor: value }}
         />
       </PopoverTrigger>
-      <PopoverContent className="w-fit" align="end">
-        <Colorful
-          disableAlpha={true}
+      <PopoverContent className="w-fit z-50" align="end">
+
+        <HexAlphaColorPicker
           color={value}
-          onChange={(color) => onChange(color.hex)}
-        />
+          onChange={(color) => onChange(color)}
+
+        />;
       </PopoverContent>
     </Popover>
     <Input
