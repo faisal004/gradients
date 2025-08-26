@@ -30,7 +30,7 @@ const ColorPicker = ({ label, value, onChange }: ColorPickerProps) => (
           color={value}
           onChange={(color) => onChange(color)}
 
-        />;
+        />
       </PopoverContent>
     </Popover>
     <Input
