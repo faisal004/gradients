@@ -38,9 +38,9 @@ interface GradientState {
 export const useGradientStore = create<GradientState>((set) => ({
   addVia: false,
   setAddVia: (addVia) => set({ addVia }),
-  from: '#06b6d4',
-  to: '#ef4444',
-  direction: "right",
+  from: '#0c2b1a',
+  to: '#439df057',
+  direction: "top",
   via: "",
   setFrom: (color) => set({ from: color }),
   setTo: (color) => set({ to: color }),

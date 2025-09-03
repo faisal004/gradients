@@ -3,11 +3,12 @@ import { Github } from "lucide-react"
 import Directions from "./rightSidebar/directions"
 import Palette from "./rightSidebar/palette"
 import ThemeToggle from "./theme-toggle"
-import { Button, buttonVariants } from "./ui/button"
+import {  buttonVariants } from "./ui/button"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import GradientRange from "./rightSidebar/gradient-rage"
 import GridsOrDots from "./rightSidebar/gridsOrDots"
+// import MaskControls from "./rightSidebar/mask-controller"
 
 const RightSidebar = () => {
     return (
@@ -28,6 +29,7 @@ const RightSidebar = () => {
                 <Directions />
                 <GradientRange />
                 <GridsOrDots />
+                {/* <MaskControls/> */}
             </div>
         </div>
     )

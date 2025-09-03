@@ -4,10 +4,13 @@ import { useGradientStore } from "../store/gradient-store";
 import GradientCopyButton from "./gradient-copy-button";
 import { useGridDotsStore } from "../store/grid-dots-store";
 import CssGradientCopyButton from "./css-gradient-copy";
+import { useMaskStore } from "@/store/masking-store";
 
 const GradientScreen = () => {
   const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage, gradientType, radialShape, shapePosition } = useGradientStore();
   const { addGrid, addDots, gridSize, dotsSize, gridColor, dotsColor } = useGridDotsStore();
+  const { addMask, buildMask, maskSize, maskRepeat } = useMaskStore(); // Use the mask store
+
   const buildGradient = () => {
     const colorStops = [
       `${from} ${fromPercentage}%`,
@@ -70,21 +73,42 @@ const GradientScreen = () => {
     };
   };
 
+  const getMaskStyles = () => {
+    if (!addMask) return {};
+    
+    const maskImage = buildMask();
+    console.log(maskImage,"faisal")
+    
+    return {
+      WebkitMaskImage: maskImage,
+      WebkitMaskRepeat: maskRepeat,
+      WebkitMaskSize: maskSize,
+      WebkitMaskPosition: "center",
+      maskImage: maskImage,
+      maskRepeat: maskRepeat,
+      maskSize: maskSize,
+      maskPosition: "center"
+    };
+  };
+
   return (
-    <div className="h-full flex flex-col gap-2 md:gap-5 mt-6 md:mt-0  items-center justify-center">
-      <div
-        className="aspect-[16/9] w-full max-w-[500px] max-h-[500px] border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-lg p-4 flex items-center justify-center relative"
-        style={getBackgroundStyles()}
+    <div className="h-full flex flex-col gap-2 md:gap-5 mt-6 md:mt-0 items-center justify-center relative">
+      <div 
+        className="absolute inset-0"
+        style={{
+          ...getBackgroundStyles(),
+          ...getMaskStyles() // Apply mask styles conditionally
+        }}
         role="img"
-        aria-label={`Gradient preview with colors from ${from} to ${to}${via ? ` via ${via}` : ''}`}
-      >
+      />
+      
+      <div className="relative z-10 flex flex-col gap-2 md:gap-5 items-center justify-center h-full text-4xl">
         Keep building.
-      </div>
-
-      <div className="flex gap-2 items-center justify-center">
-        <GradientCopyButton />
-
-        <CssGradientCopyButton />
+        
+        <div className="flex gap-2 items-center mt-4 justify-center">
+          <GradientCopyButton />
+          <CssGradientCopyButton />
+        </div>
       </div>
     </div>
   );

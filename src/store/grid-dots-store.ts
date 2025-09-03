@@ -30,13 +30,13 @@ export const useGridDotsStore = create<GridDotsState>((set) => ({
     setAddDots: (addDots) => set({ addDots }),
 
     // grid 
-    gridSize: 20,
+    gridSize: 40,
     setGridSize: (gridSize) => set({ gridSize }),
     gridColor: "#e5e7eb",
     setGridColor: (gridColor) => set({ gridColor }),
 
     // dots 
-    dotsSize: 20,
+    dotsSize: 60,
     setDotsSize: (dotsSize) => set({ dotsSize }),
     dotsColor: "#e5e7eb",
     setDotsColor: (dotsColor) => set({ dotsColor }),
