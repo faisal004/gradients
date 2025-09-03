@@ -15,6 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import PointSelector from "../custom-ui/axis-selector";
+import { CSS_DIRECTION_VALUES } from "@/lib/data/directions";
 
 const MaskControls = () => {
   const {
@@ -37,7 +38,9 @@ const MaskControls = () => {
     maskType,setMaskType,
     setRadialShape,
     radialPosition,
-    setRadialPosition
+    setRadialPosition,
+    direction,
+    setDirection
 
   } = useMaskStore();
 
@@ -131,7 +134,7 @@ const MaskControls = () => {
                     )}
                 </AnimatePresence>
 
-                {/* {maskType === "linear" &&
+                {maskType === "linear" &&
                     <div className="flex flex-col gap-2 w-full">
                         <div className="font-bold text-sm w-full text-left">
                             Gradient Direction
@@ -149,7 +152,7 @@ const MaskControls = () => {
                             </SelectContent>
                         </Select>
                     </div>
-                } */}
+                }
 
 
             </div>
