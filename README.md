@@ -8,8 +8,6 @@ A tactile, responsive gradient studio for designing layered CSS backgrounds and 
 - Grid and dot overlays
 - Linear and radial masks with fade, spotlight, vignette, and edge presets
 - Undo, redo, reset, and randomize
-- Curated presets, local favorites, and recent designs
-- Shareable URL state
 - Visible CSS, Tailwind, React, CSS-variable, and SVG output
 - SVG and 1600×900 PNG downloads
 - Keyboard-accessible focal-point controls and reduced-motion support
@@ -38,4 +36,3 @@ npm run build
 - [Framer Motion](https://www.framer.com/motion/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Vitest](https://vitest.dev/)
-

@@ -84,34 +84,6 @@ export const DEFAULT_SNAPSHOT: GeneratorSnapshot = {
   },
 };
 
-export const GRADIENT_PRESETS: Array<{ name: string; snapshot: GeneratorSnapshot }> = [
-  { name: "Forest mist", snapshot: DEFAULT_SNAPSHOT },
-  {
-    name: "Aurora",
-    snapshot: {
-      ...DEFAULT_SNAPSHOT,
-      gradient: { ...DEFAULT_SNAPSHOT.gradient, from: "#050816", via: "#6d28d9", to: "#22d3ee", addVia: true, direction: "bottom right" },
-      pattern: { ...DEFAULT_SNAPSHOT.pattern, type: "grid", gridSize: 44, gridColor: "#ffffff1f" },
-    },
-  },
-  {
-    name: "Peach glow",
-    snapshot: {
-      ...DEFAULT_SNAPSHOT,
-      gradient: { ...DEFAULT_SNAPSHOT.gradient, from: "#fff1eb", via: "#ff9a9e", to: "#fad0c4", addVia: true, direction: "bottom" },
-      pattern: { ...DEFAULT_SNAPSHOT.pattern, type: "none" },
-    },
-  },
-  {
-    name: "Electric bloom",
-    snapshot: {
-      ...DEFAULT_SNAPSHOT,
-      gradient: { ...DEFAULT_SNAPSHOT.gradient, from: "#12002f", via: "#7c3aed", to: "#ec4899", addVia: true, gradientType: "radial", shapePosition: { x: 68, y: 34 } },
-      pattern: { ...DEFAULT_SNAPSHOT.pattern, type: "dots", dotsSize: 32, dotsColor: "#ffffff26" },
-    },
-  },
-];
-
 export function getSnapshot(): GeneratorSnapshot {
   const gradient = useGradientStore.getState();
   const pattern = useGridDotsStore.getState();
@@ -181,20 +153,4 @@ export function applySnapshot(snapshot: GeneratorSnapshot) {
     maskSize: snapshot.mask.size,
     maskRepeat: snapshot.mask.repeat,
   });
-}
-
-export function serializeSnapshot(snapshot: GeneratorSnapshot) {
-  const bytes = new TextEncoder().encode(JSON.stringify(snapshot));
-  const binary = Array.from(bytes, byte => String.fromCharCode(byte)).join("");
-  return btoa(binary);
-}
-
-export function deserializeSnapshot(value: string): GeneratorSnapshot | null {
-  try {
-    const binary = atob(value);
-    const parsed = JSON.parse(new TextDecoder().decode(Uint8Array.from(binary, character => character.charCodeAt(0)))) as GeneratorSnapshot;
-    return parsed?.version === 1 ? parsed : null;
-  } catch {
-    return null;
-  }
 }
