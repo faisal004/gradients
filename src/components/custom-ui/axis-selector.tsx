@@ -45,12 +45,12 @@ export default function PointSelector({ position, setPosition }: PointSelectorPr
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuetext={`${Math.round(position.x)}% horizontal, ${Math.round(position.y)}% vertical`}
-        className="relative h-40 touch-none overflow-hidden rounded-lg border bg-[radial-gradient(circle,currentColor_1px,transparent_1px)] bg-[size:20px_20px] text-foreground/15 outline-none focus:ring-2 focus:ring-ring"
+        className="relative h-40 touch-none overflow-hidden rounded-none border bg-[radial-gradient(circle,currentColor_1px,transparent_1px)] bg-[size:20px_20px] text-foreground/15 outline-none focus:ring-2 focus:ring-ring"
         onPointerDown={handlePointerDown}
         onPointerMove={event => { if (event.currentTarget.hasPointerCapture(event.pointerId)) updateFromPointer(event); }}
         onKeyDown={handleKeyDown}
       >
-        <div className="absolute size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform active:scale-110" style={{ left: `${position.x}%`, top: `${position.y}%` }} />
+        <div className="absolute size-5 -translate-x-1/2 -translate-y-1/2 rounded-none border-2 border-white bg-red-500 shadow-lg transition-transform active:scale-110" style={{ left: `${position.x}%`, top: `${position.y}%` }} />
       </div>
       <div className="mt-2 text-center text-xs tabular-nums">{Math.round(position.x)}% · {Math.round(position.y)}%</div>
     </div>

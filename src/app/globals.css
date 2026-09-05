@@ -37,14 +37,16 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0px;
   --background: oklch(1 0 0);
   --brand: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -138,7 +140,7 @@
 
 @layer components {
   .control-card {
-    @apply flex w-full flex-col gap-3 overflow-hidden rounded-xl border border-zinc-800/15 bg-background p-3 shadow-[0_1px_5px_rgb(0,0,0,0.12)] dark:border-zinc-700/80;
+    @apply flex w-full flex-col gap-3 overflow-hidden rounded-none border border-zinc-800/15 bg-background p-3 shadow-[0_1px_5px_rgb(0,0,0,0.12)] dark:border-zinc-700/80;
   }
 
   .control-title {
@@ -146,7 +148,7 @@
   }
 
   .control-select {
-    @apply h-9 rounded-md border border-input bg-transparent px-2 text-xs shadow-xs;
+    @apply h-9 rounded-none border border-input bg-transparent px-2 text-xs shadow-xs;
   }
 }
 
@@ -207,7 +209,7 @@ html {
   --slider-width: 100%;
   --slider-height:50px;
   --slider-bg: rgb(82, 82, 82);
-  --slider-border-radius: 9px;
+  --slider-border-radius: 0px;
   /* level */
   --level-color: rgb(255, 255, 255, 0.6);
   --level-transition-duration: 0.1s;

@@ -43,11 +43,11 @@ export default function ExportPanel() {
   };
 
   return (
-    <section className="w-full min-w-0 rounded-xl border border-white/15 bg-black/45 text-white shadow-lg backdrop-blur-md">
+    <section className="w-full min-w-0 rounded-none border border-white/15 bg-black/45 text-white shadow-lg backdrop-blur-md">
       <div className="flex min-w-0 flex-wrap items-center gap-1.5 p-1.5">
         <Button size="sm" variant="ghost" onClick={() => setOpen(value => !value)} aria-expanded={open}><Code2 /> {open ? "Hide code" : "Show code"}</Button>
         <div className="flex min-w-0 flex-1 gap-1 overflow-x-auto" role="group" aria-label="Export format">
-          {(["CSS", "Tailwind", "React", "Variables", "SVG"] as Format[]).map(item => <button key={item} onClick={() => { setFormat(item); setOpen(true); }} className={`rounded-md px-2 py-1.5 text-xs transition-colors ${format === item ? "bg-white text-black" : "text-white/70 hover:bg-white/10 hover:text-white"}`}>{item}</button>)}
+          {(["CSS", "Tailwind", "React", "Variables", "SVG"] as Format[]).map(item => <button key={item} onClick={() => { setFormat(item); setOpen(true); }} className={`rounded-none px-2 py-1.5 text-xs transition-colors ${format === item ? "bg-white text-black" : "text-white/70 hover:bg-white/10 hover:text-white"}`}>{item}</button>)}
         </div>
         <Button size="sm" variant="ghost" onClick={copy} className="ml-auto">{copied ? <Check /> : <Copy />} {copied ? "Copied" : "Copy"}</Button>
         <Button size="sm" variant="ghost" onClick={() => void download("svg")}><Download /> SVG</Button>

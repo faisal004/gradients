@@ -79,7 +79,7 @@ export default function WorkspaceToolbar() {
   };
 
   return (
-    <section className="flex w-fit items-center gap-1.5 rounded-xl border border-white/15 bg-black/35 p-1.5 text-white shadow-lg backdrop-blur-md" aria-label="Design actions">
+    <section className="flex w-fit items-center gap-1.5 rounded-none border border-white/15 bg-black/35 p-1.5 text-white shadow-lg backdrop-blur-md" aria-label="Design actions">
       <Button size="icon" variant="ghost" onClick={undo} disabled={!past.current.length} aria-label="Undo"><Undo2 /></Button>
       <Button size="icon" variant="ghost" onClick={redo} disabled={!future.current.length} aria-label="Redo"><Redo2 /></Button>
       <span className="mx-1 h-5 w-px bg-white/15" />

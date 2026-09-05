@@ -36,11 +36,11 @@ export default function PresetsPage() {
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Gradient presets">
           {presets.map(item => (
-            <article key={item.id} className="group overflow-hidden rounded-2xl border bg-card shadow-sm transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:shadow-xl">
+            <article key={item.id} className="group overflow-hidden rounded-none border bg-card shadow-sm transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:shadow-xl">
               <button className="block w-full text-left" onClick={() => selectPreset(item)} aria-label={`Use ${item.name} preset`}>
                 <div className="relative aspect-[4/3] overflow-hidden bg-zinc-900" style={buildPreviewStyle(item.snapshot)}>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
-                  <span className="absolute bottom-3 right-3 rounded-full border border-white/20 bg-black/35 px-3 py-1.5 text-xs text-white opacity-0 backdrop-blur-md transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100">Use preset</span>
+                  <span className="absolute bottom-3 right-3 rounded-none border border-white/20 bg-black/35 px-3 py-1.5 text-xs text-white opacity-0 backdrop-blur-md transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100">Use preset</span>
                 </div>
                 <div className="p-4">
                   <h2 className="font-semibold tracking-tight">{item.name}</h2>

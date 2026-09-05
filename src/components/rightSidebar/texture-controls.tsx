@@ -27,9 +27,9 @@ export default function TextureControls() {
         onValueChange={value => texture.setType(value as "noise" | "dither")}
         className="w-full"
       >
-        <TabsList className="w-full rounded-[2px]">
-          <TabsTrigger value="noise" className="rounded-[3px]">Noise</TabsTrigger>
-          <TabsTrigger value="dither" className="rounded-[3px]">Dither</TabsTrigger>
+        <TabsList className="w-full rounded-none">
+          <TabsTrigger value="noise" className="rounded-none">Noise</TabsTrigger>
+          <TabsTrigger value="dither" className="rounded-none">Dither</TabsTrigger>
         </TabsList>
       </Tabs>
       <div className="flex flex-col gap-2">

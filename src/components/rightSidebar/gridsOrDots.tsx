@@ -20,11 +20,11 @@ const GridsOrDots = () => {
                 </div>
             </div>
             <Tabs defaultValue={addDots ? "dots" : "grid"} className="w-full">
-                <TabsList className="w-full rounded-[2px]">
-                    <TabsTrigger value="grid" className="rounded-[3px]">Grid</TabsTrigger>
-                    <TabsTrigger value="dots" className="rounded-[3px]">Dots</TabsTrigger>
+                <TabsList className="w-full rounded-none">
+                    <TabsTrigger value="grid" className="rounded-none">Grid</TabsTrigger>
+                    <TabsTrigger value="dots" className="rounded-none">Dots</TabsTrigger>
                 </TabsList>
-                <TabsContent value="grid" className="border border-zinc-800/20 dark:border-zinc-800 rounded-[3px] overflow-hidden p-3 space-y-5">
+                <TabsContent value="grid" className="border border-zinc-800/20 dark:border-zinc-800 rounded-none overflow-hidden p-3 space-y-5">
                     <div className="flex items-center   justify-end">
 
                         <div className="flex items-center gap-2">
@@ -42,7 +42,7 @@ const GridsOrDots = () => {
                         <ColorPicker label="Grid Color" value={gridColor} onChange={(e) => setGridColor(e)} />
                     </div>
                 </TabsContent>
-                <TabsContent value="dots" className="border border-zinc-800/20 dark:border-zinc-800 rounded-[3px] overflow-hidden p-3 space-y-5">
+                <TabsContent value="dots" className="border border-zinc-800/20 dark:border-zinc-800 rounded-none overflow-hidden p-3 space-y-5">
                     <div className="flex items-center   justify-end">
 
                         <div className="flex items-center gap-2">

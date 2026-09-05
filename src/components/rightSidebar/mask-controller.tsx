@@ -69,7 +69,7 @@ export default function MaskControls() {
         )}
       </div>
       <div className="grid grid-cols-4 gap-1">
-        {(["fade", "spotlight", "vignette", "edge"] as const).map(preset => <button key={preset} onClick={() => setPreset(preset)} className="rounded-md border px-1.5 py-1 text-[10px] capitalize transition-colors hover:bg-foreground hover:text-background">{preset}</button>)}
+        {(["fade", "spotlight", "vignette", "edge"] as const).map(preset => <button key={preset} onClick={() => setPreset(preset)} className="rounded-none border px-1.5 py-1 text-[10px] capitalize transition-colors hover:bg-foreground hover:text-background">{preset}</button>)}
       </div>
       {mask.addMask && <>
         <label className="flex items-center justify-between text-xs"><span>Middle stop</span><Switch checked={Boolean(mask.via)} onCheckedChange={checked => mask.setVia(checked ? "black" : null)} /></label>

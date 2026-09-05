@@ -23,7 +23,7 @@ const ColorPicker = ({ label, value, onChange }: ColorPickerProps) => {
         <Button
           variant="ghost"
           size="sm"
-          className="w-4 h-4 p-0 absolute right-3 top-1/2 -translate-y-1/2 z-10 rounded-full border-2 dark:border-zinc-100/20 border-zinc-900/20"
+          className="w-4 h-4 p-0 absolute right-3 top-1/2 -translate-y-1/2 z-10 rounded-none border-2 dark:border-zinc-100/20 border-zinc-900/20"
           style={{ backgroundColor: value }}
         />
       </PopoverTrigger>
@@ -43,7 +43,7 @@ const ColorPicker = ({ label, value, onChange }: ColorPickerProps) => {
       onChange={e => onChange(e.target.value)}
       className={`w-full px-12 text-right ${isValid ? "" : "border-red-500 text-red-500"}`}
     />
-    <span className=" font-mono text-[10px] px-[8px] py-1 rounded bg-zinc-200/50 dark:bg-zinc-700/50 absolute left-[7px] top-1/2 -translate-y-1/2 ">{label}</span>
+    <span className=" font-mono text-[10px] px-[8px] py-1 rounded-none bg-zinc-200/50 dark:bg-zinc-700/50 absolute left-[7px] top-1/2 -translate-y-1/2 ">{label}</span>
     {!isValid && <span className="sr-only" role="alert">Invalid CSS color</span>}
   </div>
 };

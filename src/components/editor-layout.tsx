@@ -12,7 +12,7 @@ function SidebarFrame({ label, children }: { label: string; children: ReactNode 
   return (
     <aside
       aria-label={label}
-      className="z-10 min-w-0 rounded-xl border border-zinc-800/20 bg-[var(--brand)] p-3 shadow-lg lg:h-full lg:overflow-y-auto"
+      className="z-10 min-w-0 rounded-none border border-zinc-800/20 bg-[var(--brand)] p-3 shadow-lg lg:h-full lg:overflow-y-auto"
     >
       {children}
     </aside>
@@ -41,7 +41,7 @@ export default function EditorLayout() {
       </div>
 
       <section className="z-10 min-w-0 space-y-2 lg:hidden">
-        <div className="grid grid-cols-2 gap-1 rounded-xl border border-zinc-800/20 bg-[var(--brand)] p-1 font-sans shadow-lg" role="tablist" aria-label="Editor panels">
+        <div className="grid grid-cols-2 gap-1 rounded-none border border-zinc-800/20 bg-[var(--brand)] p-1 font-sans shadow-lg" role="tablist" aria-label="Editor panels">
           {([
             ["color", "Color"],
             ["overlay", "Overlay"],
@@ -53,7 +53,7 @@ export default function EditorLayout() {
               aria-selected={pane === id}
               onClick={() => setPane(id)}
               className={cn(
-                "rounded-lg px-3 py-2 text-sm font-semibold tracking-wide transition-[transform,background-color,color] duration-150 ease-out active:scale-[0.97]",
+                "rounded-none px-3 py-2 text-sm font-semibold tracking-wide transition-[transform,background-color,color] duration-150 ease-out active:scale-[0.97]",
                 pane === id ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground",
               )}
             >
