@@ -29,7 +29,7 @@ export default function PresetsPage() {
             <Link href="/" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "-ml-3 mb-4")}><ArrowLeft /> Back to editor</Link>
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground"><Sparkles className="size-4" /> Gradio collection</div>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-6xl">Start somewhere beautiful.</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">A small collection of gradients, patterns, and masks. Pick one, then make it completely yours in the editor.</p>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">A curated collection of gradients, patterns, and masks. Pick one, then make it completely yours in the editor.</p>
           </div>
           <Button variant="outline" onClick={() => setPresets(shuffled(presets))}><Shuffle /> Shuffle</Button>
         </header>

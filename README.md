@@ -8,7 +8,7 @@ A tactile, responsive gradient studio for designing layered CSS backgrounds and 
 - Grid and dot overlays
 - Linear and radial masks with fade, spotlight, vignette, and edge presets
 - Undo, redo, reset, and randomize
-- Dedicated gallery with 12 ready-to-edit presets and shuffle
+- Dedicated gallery with 30 ready-to-edit presets and shuffle
 - Visible CSS, Tailwind, React, CSS-variable, and SVG output
 - SVG and 1600×900 PNG downloads
 - Keyboard-accessible focal-point controls and reduced-motion support
