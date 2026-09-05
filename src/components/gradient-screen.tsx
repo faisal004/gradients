@@ -17,7 +17,7 @@ const GradientScreen = () => {
   const snapshot = getSnapshot();
 
   return (
-    <main className="relative flex h-full min-h-[560px] min-w-0 max-w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-950 shadow-2xl md:min-h-[420px]">
+    <main className="relative flex h-full min-h-[480px] min-w-0 max-w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-950 shadow-2xl lg:min-h-0">
       <div
         data-gradient-preview
         className="absolute inset-0"

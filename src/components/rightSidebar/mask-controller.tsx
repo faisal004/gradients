@@ -4,10 +4,21 @@ import { useMaskStore } from "@/store/masking-store";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import ColorPicker from "../color-picker";
 import PercentageSlider from "../percentage-slider";
 import PointSelector from "../custom-ui/axis-selector";
-import { CSS_DIRECTION_VALUES } from "@/lib/data/directions";
+
+const MASK_DIRECTIONS = [
+  { value: "top", label: "Top" },
+  { value: "bottom", label: "Bottom" },
+  { value: "left", label: "Left" },
+  { value: "right", label: "Right" },
+  { value: "top-right", label: "Top Right" },
+  { value: "top-left", label: "Top Left" },
+  { value: "bottom-right", label: "Bottom Right" },
+  { value: "bottom-left", label: "Bottom Left" },
+] as const;
 
 export default function MaskControls() {
   const mask = useMaskStore();
@@ -25,17 +36,36 @@ export default function MaskControls() {
         <Switch checked={mask.addMask} onCheckedChange={mask.setAddMask} aria-label="Enable mask" />
       </div>
       <div className="grid grid-cols-2 gap-2">
-        <select value={mask.maskType} onChange={event => mask.setMaskType(event.target.value as "linear" | "radial")} className="control-select" aria-label="Mask type">
-          <option value="linear">Linear mask</option><option value="radial">Radial mask</option>
-        </select>
+        <Select value={mask.maskType} onValueChange={value => mask.setMaskType(value as "linear" | "radial")}>
+          <SelectTrigger className="w-full text-xs" aria-label="Mask type">
+            <SelectValue placeholder="Mask type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="linear">Linear</SelectItem>
+            <SelectItem value="radial">Radial</SelectItem>
+          </SelectContent>
+        </Select>
         {mask.maskType === "linear" ? (
-          <select value={mask.direction} onChange={event => mask.setDirection(event.target.value as typeof mask.direction)} className="control-select" aria-label="Mask direction">
-            {Object.entries(CSS_DIRECTION_VALUES).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-          </select>
+          <Select value={mask.direction.replaceAll(" ", "-")} onValueChange={value => mask.setDirection(value as typeof mask.direction)}>
+            <SelectTrigger className="w-full text-xs" aria-label="Mask direction">
+              <SelectValue placeholder="Direction" />
+            </SelectTrigger>
+            <SelectContent>
+              {MASK_DIRECTIONS.map(item => (
+                <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         ) : (
-          <select value={mask.radialShape} onChange={event => mask.setRadialShape(event.target.value as "circle" | "ellipse")} className="control-select" aria-label="Mask shape">
-            <option value="circle">Circle</option><option value="ellipse">Ellipse</option>
-          </select>
+          <Select value={mask.radialShape} onValueChange={value => mask.setRadialShape(value as "circle" | "ellipse")}>
+            <SelectTrigger className="w-full text-xs" aria-label="Mask shape">
+              <SelectValue placeholder="Shape" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="circle">Circle</SelectItem>
+              <SelectItem value="ellipse">Ellipse</SelectItem>
+            </SelectContent>
+          </Select>
         )}
       </div>
       <div className="grid grid-cols-4 gap-1">
@@ -54,7 +84,20 @@ export default function MaskControls() {
         {mask.maskType === "radial" && <PointSelector position={mask.radialPosition} setPosition={mask.setRadialPosition} />}
         <div className="grid grid-cols-2 gap-2">
           <Label className="space-y-1 text-xs"><span>Mask size</span><Input value={mask.maskSize} onChange={event => mask.setMaskSize(event.target.value)} /></Label>
-          <Label className="space-y-1 text-xs"><span>Repeat</span><select value={mask.maskRepeat} onChange={event => mask.setMaskRepeat(event.target.value as typeof mask.maskRepeat)} className="control-select w-full"><option value="no-repeat">No repeat</option><option value="repeat">Repeat</option><option value="repeat-x">Repeat X</option><option value="repeat-y">Repeat Y</option></select></Label>
+          <div className="space-y-1 text-xs">
+            <span>Repeat</span>
+            <Select value={mask.maskRepeat} onValueChange={value => mask.setMaskRepeat(value as typeof mask.maskRepeat)}>
+              <SelectTrigger className="w-full text-xs" aria-label="Mask repeat">
+                <SelectValue placeholder="Repeat" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="no-repeat">No repeat</SelectItem>
+                <SelectItem value="repeat">Repeat</SelectItem>
+                <SelectItem value="repeat-x">Repeat X</SelectItem>
+                <SelectItem value="repeat-y">Repeat Y</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </>}
     </section>
