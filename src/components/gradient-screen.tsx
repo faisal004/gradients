@@ -1,116 +1,38 @@
 "use client";
 
-import { useGradientStore } from "../store/gradient-store";
-import GradientCopyButton from "./gradient-copy-button";
-import { useGridDotsStore } from "../store/grid-dots-store";
-import CssGradientCopyButton from "./css-gradient-copy";
+import { buildPreviewStyle } from "@/lib/gradient-output";
+import { getSnapshot } from "@/lib/generator-state";
+import { useGradientStore } from "@/store/gradient-store";
+import { useGridDotsStore } from "@/store/grid-dots-store";
 import { useMaskStore } from "@/store/masking-store";
+import ExportPanel from "./export-panel";
+import WorkspaceToolbar from "./workspace-toolbar";
 
 const GradientScreen = () => {
-  const { from, to, via, direction, fromPercentage, toPercentage, viaPercentage, gradientType, radialShape, shapePosition } = useGradientStore();
-  const { addGrid, addDots, gridSize, dotsSize, gridColor, dotsColor } = useGridDotsStore();
-  const { addMask, buildMask, maskSize, maskRepeat } = useMaskStore(); // Use the mask store
-
-  const buildGradient = () => {
-    const colorStops = [
-      `${from} ${fromPercentage}%`,
-      ...(via ? [`${via} ${viaPercentage}%`] : []),
-      `${to} ${toPercentage}%`
-    ];
-
-    switch (gradientType) {
-      case "linear":
-        return `linear-gradient(to ${direction}, ${colorStops.join(',')})`;
-      case "radial":
-        return `radial-gradient(${radialShape} at ${shapePosition.x}% ${shapePosition.y}%, ${colorStops.join(',')})`;
-    }
-  };
-
-  const buildGrid = () => {
-    if (!addGrid && !addDots) return '';
-
-    if (addDots) {
-      return `
-        radial-gradient(circle, ${dotsColor} 1px, transparent 1px),
-        radial-gradient(circle, ${dotsColor} 1px, transparent 1px)
-      `.replace(/\s+/g, ' ').trim();
-    }
-
-    if (addGrid) {
-      return `
-        linear-gradient(to right, ${gridColor} 1px, transparent 1px),
-        linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)
-      `.replace(/\s+/g, ' ').trim();
-    }
-
-    return '';
-  };
-
-  const getBackgroundStyles = () => {
-    const gridPattern = buildGrid();
-    const gradient = buildGradient();
-
-    if (!gridPattern) {
-      return {
-        backgroundImage: gradient,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center'
-      };
-    }
-
-    const backgroundImages = [gridPattern, gradient].filter(Boolean);
-
-    return {
-      backgroundImage: backgroundImages.join(', '),
-      backgroundSize: addDots
-        ? `${dotsSize}px ${dotsSize}px, ${dotsSize}px ${dotsSize}px, cover`
-        : `${gridSize}px ${gridSize}px, ${gridSize}px ${gridSize}px, cover`,
-      backgroundRepeat: addDots
-        ? 'repeat, repeat, no-repeat'
-        : 'repeat, repeat, no-repeat',
-      backgroundPosition: 'center, center, center'
-    };
-  };
-
-  const getMaskStyles = () => {
-    if (!addMask) return {};
-    
-    const maskImage = buildMask();
-    console.log(maskImage,"faisal")
-    
-    return {
-      WebkitMaskImage: maskImage,
-      WebkitMaskRepeat: maskRepeat,
-      WebkitMaskSize: maskSize,
-      WebkitMaskPosition: "center",
-      maskImage: maskImage,
-      maskRepeat: maskRepeat,
-      maskSize: maskSize,
-      maskPosition: "center"
-    };
-  };
+  useGradientStore();
+  useGridDotsStore();
+  useMaskStore();
+  const snapshot = getSnapshot();
 
   return (
-    <div className="h-full flex flex-col gap-2 md:gap-5 mt-6 md:mt-0 items-center justify-center relative">
-      <div 
+    <main className="relative flex h-full min-h-[560px] min-w-0 max-w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-950 shadow-2xl md:min-h-[420px]">
+      <div
+        data-gradient-preview
         className="absolute inset-0"
-        style={{
-          ...getBackgroundStyles(),
-          ...getMaskStyles() // Apply mask styles conditionally
-        }}
+        style={buildPreviewStyle(snapshot)}
         role="img"
+        aria-label="Live preview of the generated gradient"
       />
-      
-      <div className="relative z-10 flex flex-col gap-2 md:gap-5 items-center justify-center h-full text-4xl">
-        Keep building.
-        
-        <div className="flex gap-2 items-center mt-4 justify-center">
-          <GradientCopyButton />
-          <CssGradientCopyButton />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/25" />
+      <div className="relative z-10 flex h-full min-w-0 flex-col justify-between gap-6 p-3 sm:p-5">
+        <WorkspaceToolbar />
+        <div className="pointer-events-none mx-auto max-w-xl text-center text-white drop-shadow-[0_2px_14px_rgba(0,0,0,.55)]">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/65">Live canvas</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-5xl">Make the background yours.</h1>
         </div>
+        <ExportPanel />
       </div>
-    </div>
+    </main>
   );
 };
 

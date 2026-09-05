@@ -12,7 +12,7 @@ const Navbar = () => {
             </div>
             <div className="flex items-center gap-2">
                 <ThemeToggle />
-                <Link href="https://github.com/faisal004/gradients" target="_blank" className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}>
+                <Link aria-label="Open the Gradio GitHub repository" href="https://github.com/faisal004/gradients" target="_blank" rel="noreferrer" className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}>
                     <Github className="h-5 w-5" />
                 </Link>
             </div>

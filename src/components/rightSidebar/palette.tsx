@@ -1,5 +1,4 @@
 "use client"
-import { useState } from "react"
 import { useGradientStore } from "../../store/gradient-store"
 import { motion, AnimatePresence } from "framer-motion"
 import { Input } from "../ui/input"
@@ -28,14 +27,14 @@ const Palette = () => {
     }
     return (
 
-        <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
+        <section className="control-card">
             <div className="flex items-center justify-between w-full text-sm px-1">
                 <div className=" font-bold tracking-widest">
                     Palette
                 </div>
                 <Label className="flex items-center gap-2 w-full justify-end text-xs">
                     Add Via
-                    <Input type="checkbox" onChange={toggleAddVia} className="w-full cursor-pointer size-3 " />
+                    <Input type="checkbox" checked={addVia} onChange={toggleAddVia} className="w-full cursor-pointer size-3 " />
                 </Label>
             </div>
             <div className="flex flex-col gap-2 w-full">
@@ -58,7 +57,7 @@ const Palette = () => {
                 </AnimatePresence>
                 <ColorPicker label="To" value={to} onChange={setTo} />
             </div>
-        </div>
+        </section>
     )
 }
 

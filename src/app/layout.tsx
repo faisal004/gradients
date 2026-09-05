@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-providers";
 import Navbar from "@/components/navbar";
 import Umami from "@/scripts/umami";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Gradio",
-  description: "Gradient Generator",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  title: "Gradio — CSS Gradient Studio",
+  description: "Design, save, share, and export layered CSS gradients, patterns, and masks.",
+  openGraph: { title: "Gradio — CSS Gradient Studio", description: "A tactile gradient and pattern generator.", images: ["/opengraph-image.png"] },
 };
 
 export default function RootLayout({
@@ -27,12 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <script defer src="https://cloud.umami.is/script.js" data-website-id={process.env.NEXT_ANALYTICS_TOKEN}></script>
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -41,7 +27,7 @@ export default function RootLayout({
         >
           <Navbar />
           {children}
-          <Umami />
+          {process.env.NEXT_ANALYTICS_TOKEN && <Umami />}
         </ThemeProvider>
       </body>
     </html>

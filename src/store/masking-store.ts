@@ -78,13 +78,13 @@ export const useMaskStore = create<MaskState>((set, get) => ({
   setTo: (to) => set({ to }),
 
   fromPercentage: 0,
-  setFromPercentage: (fromPercentage) => set({ fromPercentage }),
+  setFromPercentage: (fromPercentage) => set((state) => ({ fromPercentage: Math.min(fromPercentage, state.via ? state.viaPercentage : state.toPercentage) })),
 
   viaPercentage: 50,
-  setViaPercentage: (viaPercentage) => set({ viaPercentage }),
+  setViaPercentage: (viaPercentage) => set((state) => ({ viaPercentage: Math.max(state.fromPercentage, Math.min(viaPercentage, state.toPercentage)) })),
 
   toPercentage: 100,
-  setToPercentage: (toPercentage) => set({ toPercentage }),
+  setToPercentage: (toPercentage) => set((state) => ({ toPercentage: Math.max(toPercentage, state.via ? state.viaPercentage : state.fromPercentage) })),
 
   maskSize: '100% 100%',
   setMaskSize: (maskSize) => set({ maskSize }),

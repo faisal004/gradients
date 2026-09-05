@@ -1,184 +1,58 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { Switch } from '../ui/switch';
+"use client";
 
-// Hook to track container size with ResizeObserver
-function useContainerSize(ref: React.RefObject<HTMLElement>) {
-    const [size, setSize] = React.useState({ width: 0, height: 0 });
-    React.useEffect(() => {
-        if (!ref.current) return;
-        const handleResize = () => {
-            const rect = ref.current!.getBoundingClientRect();
-            setSize({ width: rect.width, height: rect.height });
-        };
-        handleResize(); // Initial
-        const ro = new window.ResizeObserver(handleResize);
-        ro.observe(ref.current!);
-        return () => ro.disconnect();
-    }, [ref]);
-    return size;
+import { KeyboardEvent, PointerEvent, useRef, useState } from "react";
+import { Switch } from "../ui/switch";
+
+interface Position { x: number; y: number }
+interface PointSelectorProps { position: Position; setPosition: (position: Position) => void }
+
+export default function PointSelector({ position, setPosition }: PointSelectorProps) {
+  const [snappy, setSnappy] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const clamp = (value: number) => Math.max(0, Math.min(value, 100));
+  const normalize = (value: number) => snappy ? Math.round(value / 10) * 10 : Math.round(value);
+
+  const updateFromPointer = (event: PointerEvent<HTMLDivElement>) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setPosition({ x: normalize(clamp(((event.clientX - rect.left) / rect.width) * 100)), y: normalize(clamp(((event.clientY - rect.top) / rect.height) * 100)) });
+  };
+  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    event.currentTarget.setPointerCapture(event.pointerId);
+    updateFromPointer(event);
+  };
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const step = event.shiftKey || snappy ? 10 : 1;
+    const movement: Record<string, Position> = { ArrowLeft: { x: -step, y: 0 }, ArrowRight: { x: step, y: 0 }, ArrowUp: { x: 0, y: -step }, ArrowDown: { x: 0, y: step } };
+    const delta = movement[event.key];
+    if (!delta) return;
+    event.preventDefault();
+    setPosition({ x: clamp(position.x + delta.x), y: clamp(position.y + delta.y) });
+  };
+
+  return (
+    <div className="my-2">
+      <div className="mb-2 flex items-center justify-between gap-3">
+        <span className="text-xs font-semibold">Focal position</span>
+        <label className="flex items-center gap-2 text-[10px] uppercase tracking-wider">Snap <Switch checked={snappy} onCheckedChange={setSnappy} /></label>
+      </div>
+      <div
+        ref={containerRef}
+        role="slider"
+        tabIndex={0}
+        aria-label="Gradient focal position"
+        aria-valuenow={Math.round((position.x + position.y) / 2)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuetext={`${Math.round(position.x)}% horizontal, ${Math.round(position.y)}% vertical`}
+        className="relative h-40 touch-none overflow-hidden rounded-lg border bg-[radial-gradient(circle,currentColor_1px,transparent_1px)] bg-[size:20px_20px] text-foreground/15 outline-none focus:ring-2 focus:ring-ring"
+        onPointerDown={handlePointerDown}
+        onPointerMove={event => { if (event.currentTarget.hasPointerCapture(event.pointerId)) updateFromPointer(event); }}
+        onKeyDown={handleKeyDown}
+      >
+        <div className="absolute size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform active:scale-110" style={{ left: `${position.x}%`, top: `${position.y}%` }} />
+      </div>
+      <div className="mt-2 text-center text-xs tabular-nums">{Math.round(position.x)}% · {Math.round(position.y)}%</div>
+    </div>
+  );
 }
-
-const Point = ({ position, isDragging, containerRef }: any) => {
-    const size = useContainerSize(containerRef);
-    const left = (position.x / 200) * size.width;
-    const top = (position.y / 200) * size.height;
-    return (
-        <div
-            className={`absolute z-50 w-6 h-6 bg-red-500 border-2 border-white rounded-full shadow-lg transform -translate-x-3 -translate-y-3  ${isDragging ? 'scale-125 bg-red-600' : 'hover:scale-110'
-                }`}
-            style={{
-                left,
-                top,
-                cursor: isDragging ? 'grabbing' : 'grab',
-            }}
-        >
-
-        </div>
-    );
-};
-
-const Crosshairs = ({ position, isDragging, containerRef }: any) => {
-    const size = useContainerSize(containerRef);
-    const left = (position.x / 200) * size.width;
-    const top = (position.y / 200) * size.height;
-    if (!isDragging) return null;
-    return (
-        <>
-            <div
-                className="absolute top-0 bottom-0 w-px bg-red-300 opacity-60 pointer-events-none"
-                style={{ left }}
-            />
-            <div
-                className="absolute left-0 right-0 h-px bg-red-300 opacity-60 pointer-events-none"
-                style={{ top }}
-            />
-        </>
-    );
-};
-
-
-
-const PointSelector = ({ position, setPosition }: any) => {
-    const [isDragging, setIsDragging] = useState(false);
-    const [mode, setMode] = useState<'snappy' | 'free'>('free');
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    const clamp = (val: number) => Math.max(0, Math.min(val, 200));
-
-    // Snap to nearest 10 for snappy mode
-    const snap = (val: number) => Math.round(val / 10) * 10;
-
-    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        setIsDragging(true);
-        updatePosition(e.nativeEvent);
-    };
-
-    // Touch support
-    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-        setIsDragging(true);
-        updatePosition(e);
-    };
-
-    const handleMouseMove = useCallback((e: MouseEvent) => {
-        if (isDragging) {
-            updatePosition(e);
-        }
-    }, [isDragging, mode]);
-
-    const handleTouchMove = useCallback((e: TouchEvent) => {
-        if (isDragging) {
-            updatePosition(e);
-        }
-    }, [isDragging, mode]);
-
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
-    const handleTouchEnd = () => {
-        setIsDragging(false);
-    };
-
-    // Accepts MouseEvent | TouchEvent | React.TouchEvent
-    const updatePosition = (e: any) => {
-        if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            let clientX: number, clientY: number;
-            if (e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else if (e.changedTouches && e.changedTouches.length > 0) {
-                clientX = e.changedTouches[0].clientX;
-                clientY = e.changedTouches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
-            let x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-            let y = Math.max(0, Math.min(clientY - rect.top, rect.height));
-            let xPercent = (x / rect.width) * 200;
-            let yPercent = (y / rect.height) * 200;
-            if (mode === 'snappy') {
-                xPercent = snap(xPercent);
-                yPercent = snap(yPercent);
-            }
-            setPosition({ x: clamp(xPercent), y: clamp(yPercent) });
-        }
-    };
-
-    const getPxFromPercent = (percent: number, size: number) => (percent / 200) * size;
-
-    React.useEffect(() => {
-        if (isDragging) {
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', handleMouseUp);
-            document.addEventListener('touchmove', handleTouchMove);
-            document.addEventListener('touchend', handleTouchEnd);
-            return () => {
-                document.removeEventListener('mousemove', handleMouseMove);
-                document.removeEventListener('mouseup', handleMouseUp);
-                document.removeEventListener('touchmove', handleTouchMove);
-                document.removeEventListener('touchend', handleTouchEnd);
-            };
-        }
-    }, [isDragging, handleMouseMove, handleTouchMove]);
-
-    return (
-        <div className="max-w-4xl mx-auto my-2">
-            <div className="flex items-center justify-between mb-2">
-                <div className="font-bold text-sm w-full text-left">
-                    Shape Position
-                </div>
-                <div className="flex items-center justify-end gap-4">
-                    <span className="text-xs font-mono">FREE</span>
-                    <Switch
-                        checked={mode === 'snappy'}
-                        onCheckedChange={(checked) => setMode(checked ? 'snappy' : 'free')}
-                    />
-                    <span className="text-xs font-mono">SNAPPY</span>
-
-                </div>
-            </div>
-
-            <div className="dark:bg-black bg-white rounded-lg">
-                <div
-                    ref={containerRef}
-                    className="relative w-full h-60 border-2 dark:border-zinc-800 border-zinc-200 rounded-lg cursor-crosshair overflow-hidden"
-                    onMouseDown={handleMouseDown}
-                    onTouchStart={handleTouchStart}
-                    style={{ userSelect: 'none', touchAction: 'none' }}
-                >
-                    <div className="absolute inset-0 
-       dark:bg-[radial-gradient(circle,#e5e7eb_1px,transparent_1px)] 
-       bg-[radial-gradient(circle,#000000_1px,transparent_1px)]
-       bg-[size:20px_20px]"></div>
-                    <Point position={position} isDragging={isDragging} containerRef={containerRef} />
-                    <Crosshairs position={position} isDragging={isDragging} containerRef={containerRef} />
-                </div>
-            </div>
-            <div className=" flex mt-3 items-center justify-center">
-                {Math.round(position.x)}% {Math.round(position.y)}%
-            </div>
-        </div>
-    );
-}
-export default PointSelector

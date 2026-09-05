@@ -15,13 +15,13 @@ const Directions = () => {
     const { gradientType, setGradientType, direction, setDirection, radialShape, setRadialShape, shapePosition, setShapePosition } = useGradientStore();
     return (
 
-        <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
+        <section className="control-card">
 
             <div className="flex flex-col gap-2 w-full">
                 <div className="font-bold text-sm w-full text-left">
                     Gradient Type
                 </div>
-                <Select onValueChange={setGradientType} defaultValue={gradientType}>
+                <Select onValueChange={setGradientType} value={gradientType}>
                     <SelectTrigger className="w-full text-xs ">
                         <SelectValue placeholder="Select Gradient Type" />
                     </SelectTrigger>
@@ -43,7 +43,7 @@ const Directions = () => {
                                 <div className="font-bold text-sm w-full text-left">
                                     Radial Shape
                                 </div>
-                                <Select onValueChange={setRadialShape} defaultValue={radialShape}>
+                                <Select onValueChange={setRadialShape} value={radialShape}>
                                     <SelectTrigger className="w-full text-xs ">
                                         <SelectValue placeholder="Select a radial shape" />
                                     </SelectTrigger>
@@ -68,7 +68,7 @@ const Directions = () => {
                         <div className="font-bold text-sm w-full text-left">
                             Gradient Direction
                         </div>
-                        <Select onValueChange={setDirection} defaultValue={direction}>
+                        <Select onValueChange={setDirection} value={direction}>
                             <SelectTrigger className="w-full text-xs ">
                                 <SelectValue placeholder="Select a direction" />
                             </SelectTrigger>
@@ -85,7 +85,7 @@ const Directions = () => {
 
 
             </div>
-        </div>
+        </section>
     )
 }
 

@@ -4,16 +4,13 @@ import RightSidebar from "@/components/right-sidebar";
 
 export default function Home() {
   return (
-    <div className="h-screen grid grid-rows-10 md:grid-rows-1 md:grid-cols-12 w-full p-2 space-x-2 relative font-mono">
-
-
-      <div className="row-span-4 md:col-span-9 z-10 ">
+    <div className="grid min-h-screen w-full min-w-0 gap-2 overflow-x-hidden p-2 pt-16 font-mono md:h-screen md:grid-cols-12 md:pt-2">
+      <div className="z-10 min-h-[58vh] min-w-0 md:col-span-9 md:min-h-0">
         <GradientScreen />
-
       </div>
-      <div className="row-span-6 md:col-span-3 z-10 dark:bg-[var(--brand)] bg-[var(--brand)]  border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-y-auto shadow-lg p-4 no-scrollbar">
+      <aside className="z-10 min-w-0 rounded-xl border border-zinc-800/20 bg-[var(--brand)] p-3 shadow-lg md:col-span-3 md:overflow-y-auto">
         <RightSidebar />
-      </div>
+      </aside>
     </div>
   );
 }

@@ -9,7 +9,7 @@ const GradientRange = () => {
 
     return (
 
-        <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
+        <section className="control-card">
             <div className="flex items-center justify-between w-full text-sm px-1">
                 <div className=" font-bold tracking-widest">
                     Gradient Range
@@ -17,14 +17,14 @@ const GradientRange = () => {
 
             </div>
             <div className="flex h-full   w-full p-3">
-                <AnimatedSlider label="From" defaultValue={fromPercentage} onChange={(value) => setFromPercentage(value)} />
+                <AnimatedSlider label="From" value={fromPercentage} onChange={(value) => setFromPercentage(value)} />
             
-                <AnimatedSlider label="Via" defaultValue={viaPercentage || 50} onChange={(value) => setViaPercentage(value)} disabled={!addVia} />
+                <AnimatedSlider label="Via" value={viaPercentage || 50} onChange={(value) => setViaPercentage(value)} disabled={!addVia} />
 
-                <AnimatedSlider label="To" defaultValue={toPercentage} onChange={(value) => setToPercentage(value)} />
+                <AnimatedSlider label="To" value={toPercentage} onChange={(value) => setToPercentage(value)} />
 
             </div>
-        </div>
+        </section>
     )
 }
 

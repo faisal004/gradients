@@ -1,174 +1,62 @@
 "use client";
 
 import { useMaskStore } from "@/store/masking-store";
+import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import ColorPicker from "../color-picker";
-import { motion, AnimatePresence } from "framer-motion"
-import AnimatedSlider from "../percentage-slider"
-import { Switch } from "../ui/switch";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import PercentageSlider from "../percentage-slider";
 import PointSelector from "../custom-ui/axis-selector";
 import { CSS_DIRECTION_VALUES } from "@/lib/data/directions";
 
-const MaskControls = () => {
-  const {
-    addMask,
-    setAddMask,
+export default function MaskControls() {
+  const mask = useMaskStore();
+  const setPreset = (preset: "fade" | "spotlight" | "vignette" | "edge") => {
+    if (preset === "fade") useMaskStore.setState({ addMask: true, maskType: "linear", direction: "bottom", from: "black", via: null, to: "transparent" });
+    if (preset === "spotlight") useMaskStore.setState({ addMask: true, maskType: "radial", radialShape: "circle", from: "black", via: "black", to: "transparent", fromPercentage: 0, viaPercentage: 35, toPercentage: 75 });
+    if (preset === "vignette") useMaskStore.setState({ addMask: true, maskType: "radial", radialShape: "ellipse", from: "black", via: "black", to: "transparent", fromPercentage: 20, viaPercentage: 55, toPercentage: 100 });
+    if (preset === "edge") useMaskStore.setState({ addMask: true, maskType: "linear", direction: "right", from: "transparent", via: "black", to: "transparent", fromPercentage: 0, viaPercentage: 50, toPercentage: 100 });
+  };
 
-    from,
-    setFrom,
-    via,
-    setVia,
-    to,
-    setTo,
-    fromPercentage,
-    setFromPercentage,
-    viaPercentage,
-    setViaPercentage,
-    toPercentage,
-    setToPercentage,
-    radialShape,
-    maskType,setMaskType,
-    setRadialShape,
-    radialPosition,
-    setRadialPosition,
-    direction,
-    setDirection
-
-  } = useMaskStore();
-
-
-  const toggleAddVia = () => {
-    if (via) {
-      setVia("")
-    } else {
-      setVia("rgba(0,0,0,0.5)")
-    }
-  }
-
-  console.log(from)
   return (
-    <div className="">
-      <div className="flex flex-col gap-3 w-full border border-zinc-800/20 dark:border-zinc-800 rounded-[10px] overflow-hidden shadow-[0_1px_5px_rgb(0,0,0,0.2)] p-3">
-        <div className="flex items-center justify-between w-full text-sm px-1">
-          <div className=" w-full font-bold tracking-widest">
-            Mask Controls
-          </div>
-          <Switch checked={addMask} onCheckedChange={() => { setAddMask(!addMask) }} />
-
-        </div>
-        <div className="flex flex-col gap-2 w-full mt-1 ">
-          <Label className="flex items-center gap-2 w-full justify-end text-xs">
-            Add Via
-            <Input type="checkbox" onChange={toggleAddVia} className="w-full cursor-pointer size-3 " />
-          </Label>
-          <ColorPicker label="From" value={from} onChange={setFrom} />
-          <AnimatePresence>
-            {via && (
-              <motion.div
-                initial={{ opacity: 0, height: 0, y: -10 }}
-                animate={{ opacity: 1, height: "auto", y: 0 }}
-                exit={{ opacity: 0, height: 0, y: -10 }}
-                transition={{
-                  duration: 0.4,
-                  ease: "easeInOut",
-                  height: { duration: 0.4 }
-                }}
-              >
-                <ColorPicker label="Via" value={via || ""} onChange={setVia} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <ColorPicker label="To" value={to} onChange={setTo} />
-        </div>
-             <div className="flex flex-col gap-2 w-full">
-                <div className="font-bold text-sm w-full text-left">
-                    Gradient Type
-                </div>
-                <Select onValueChange={setMaskType} defaultValue={maskType}>
-                    <SelectTrigger className="w-full text-xs ">
-                        <SelectValue placeholder="Select Gradient Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="linear">Linear</SelectItem>
-                        <SelectItem value="radial">Radial</SelectItem>
-                    </SelectContent>
-                </Select>
-                <AnimatePresence mode="wait">
-                    {maskType === "radial" && (
-                        <motion.div
-                            key="radial"
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -16 }}
-                            transition={{ duration: 0.4, ease: "easeInOut" }}
-                        >
-                            <div className="flex flex-col gap-2 w-full">
-                                <div className="font-bold text-sm w-full text-left">
-                                    Radial Shape
-                                </div>
-                                <Select onValueChange={setRadialShape} defaultValue={radialShape}>
-                                    <SelectTrigger className="w-full text-xs ">
-                                        <SelectValue placeholder="Select a radial shape" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="circle">Circle</SelectItem>
-                                        <SelectItem value="ellipse">Ellipse</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div
-                                className=" mt-5"
-                            >
-                                
-                                <PointSelector position={radialPosition} setPosition={setRadialPosition} />
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
-                {maskType === "linear" &&
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="font-bold text-sm w-full text-left">
-                            Gradient Direction
-                        </div>
-                        <Select onValueChange={setDirection} defaultValue={direction}>
-                            <SelectTrigger className="w-full text-xs ">
-                                <SelectValue placeholder="Select a direction" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {Object.entries(CSS_DIRECTION_VALUES).map(([value, label]) => (
-                                    <SelectItem key={value} value={value}>
-                                        {label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                }
-
-
-            </div>
-        <div className="flex h-full   w-full p-3">
-
-        <AnimatedSlider label="From" defaultValue={fromPercentage} onChange={(value) => setFromPercentage(value)} />
-        <AnimatedSlider label="From" defaultValue={viaPercentage} onChange={(value) => setViaPercentage(value)} disabled={!via}  />
-        <AnimatedSlider label="From" defaultValue={toPercentage} onChange={(value) => setToPercentage(value)} />
+    <section className="control-card">
+      <div className="flex items-center justify-between">
+        <h2 className="control-title">Mask</h2>
+        <Switch checked={mask.addMask} onCheckedChange={mask.setAddMask} aria-label="Enable mask" />
       </div>
+      <div className="grid grid-cols-2 gap-2">
+        <select value={mask.maskType} onChange={event => mask.setMaskType(event.target.value as "linear" | "radial")} className="control-select" aria-label="Mask type">
+          <option value="linear">Linear mask</option><option value="radial">Radial mask</option>
+        </select>
+        {mask.maskType === "linear" ? (
+          <select value={mask.direction} onChange={event => mask.setDirection(event.target.value as typeof mask.direction)} className="control-select" aria-label="Mask direction">
+            {Object.entries(CSS_DIRECTION_VALUES).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+          </select>
+        ) : (
+          <select value={mask.radialShape} onChange={event => mask.setRadialShape(event.target.value as "circle" | "ellipse")} className="control-select" aria-label="Mask shape">
+            <option value="circle">Circle</option><option value="ellipse">Ellipse</option>
+          </select>
+        )}
       </div>
-
-      
-
-
-    </div>
+      <div className="grid grid-cols-4 gap-1">
+        {(["fade", "spotlight", "vignette", "edge"] as const).map(preset => <button key={preset} onClick={() => setPreset(preset)} className="rounded-md border px-1.5 py-1 text-[10px] capitalize transition-colors hover:bg-foreground hover:text-background">{preset}</button>)}
+      </div>
+      {mask.addMask && <>
+        <label className="flex items-center justify-between text-xs"><span>Middle stop</span><Switch checked={Boolean(mask.via)} onCheckedChange={checked => mask.setVia(checked ? "black" : null)} /></label>
+        <ColorPicker label="From" value={mask.from} onChange={mask.setFrom} />
+        {mask.via && <ColorPicker label="Via" value={mask.via} onChange={mask.setVia} />}
+        <ColorPicker label="To" value={mask.to} onChange={mask.setTo} />
+        <div className="flex p-2">
+          <PercentageSlider label="From" value={mask.fromPercentage} onChange={mask.setFromPercentage} />
+          <PercentageSlider label="Via" value={mask.viaPercentage} onChange={mask.setViaPercentage} disabled={!mask.via} />
+          <PercentageSlider label="To" value={mask.toPercentage} onChange={mask.setToPercentage} />
+        </div>
+        {mask.maskType === "radial" && <PointSelector position={mask.radialPosition} setPosition={mask.setRadialPosition} />}
+        <div className="grid grid-cols-2 gap-2">
+          <Label className="space-y-1 text-xs"><span>Mask size</span><Input value={mask.maskSize} onChange={event => mask.setMaskSize(event.target.value)} /></Label>
+          <Label className="space-y-1 text-xs"><span>Repeat</span><select value={mask.maskRepeat} onChange={event => mask.setMaskRepeat(event.target.value as typeof mask.maskRepeat)} className="control-select w-full"><option value="no-repeat">No repeat</option><option value="repeat">Repeat</option><option value="repeat-x">Repeat X</option><option value="repeat-y">Repeat Y</option></select></Label>
+        </div>
+      </>}
+    </section>
   );
-};
-
-export default MaskControls;
+}

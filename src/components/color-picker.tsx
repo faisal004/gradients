@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Popover,
   PopoverContent,
@@ -13,8 +15,9 @@ interface ColorPickerProps {
   onChange: (value: string) => void;
 }
 
-const ColorPicker = ({ label, value, onChange }: ColorPickerProps) => (
-  <div className="flex items-center justify-between w-full relative">
+const ColorPicker = ({ label, value, onChange }: ColorPickerProps) => {
+  const isValid = typeof CSS === "undefined" || CSS.supports("color", value);
+  return <div className="flex items-center justify-between w-full relative">
     <Popover>
       <PopoverTrigger asChild>
         <Button
@@ -34,13 +37,16 @@ const ColorPicker = ({ label, value, onChange }: ColorPickerProps) => (
       </PopoverContent>
     </Popover>
     <Input
+      aria-label={`${label} color`}
+      aria-invalid={!isValid}
       value={value}
       onChange={e => onChange(e.target.value)}
-      className="w-full px-12 text-right"
+      className={`w-full px-12 text-right ${isValid ? "" : "border-red-500 text-red-500"}`}
     />
     <span className=" font-mono text-[10px] px-[8px] py-1 rounded bg-zinc-200/50 dark:bg-zinc-700/50 absolute left-[7px] top-1/2 -translate-y-1/2 ">{label}</span>
+    {!isValid && <span className="sr-only" role="alert">Invalid CSS color</span>}
   </div>
-);
+};
 
 
 export default ColorPicker

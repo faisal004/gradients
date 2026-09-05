@@ -51,9 +51,9 @@ export const useGradientStore = create<GradientState>((set) => ({
   fromPercentage: 0,
   toPercentage: 100,
   viaPercentage: 50,
-  setFromPercentage: (percentage) => set({ fromPercentage: percentage }),
-  setToPercentage: (percentage) => set({ toPercentage: percentage }),
-  setViaPercentage: (percentage) => set({ viaPercentage: percentage }),
+  setFromPercentage: (percentage) => set((state) => ({ fromPercentage: Math.min(percentage, state.addVia ? state.viaPercentage ?? 50 : state.toPercentage) })),
+  setToPercentage: (percentage) => set((state) => ({ toPercentage: Math.max(percentage, state.addVia ? state.viaPercentage ?? 50 : state.fromPercentage) })),
+  setViaPercentage: (percentage) => set((state) => ({ viaPercentage: percentage === undefined ? undefined : Math.max(state.fromPercentage, Math.min(percentage, state.toPercentage)) })),
 
   //gradientType
   gradientType: "linear",

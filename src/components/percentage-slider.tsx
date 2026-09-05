@@ -1,16 +1,13 @@
 "use client"
 
-import { useState } from "react";
-
 interface PercentageSliderProps {
     label: string;
-    defaultValue: number;
+    value: number;
     disabled?: boolean;
     onChange?: (value: number) => void;
 }
 
-const PercentageSlider = ({ label, defaultValue, disabled, onChange }: PercentageSliderProps) => {
-    const [value, setValue] = useState(defaultValue);
+const PercentageSlider = ({ label, value, disabled, onChange }: PercentageSliderProps) => {
     return (
         <div className="flex flex-col items-center justify-between w-full h-full  ">
             <div className="flex flex-col items-center justify-between w-full h-[150px]">
@@ -19,7 +16,6 @@ const PercentageSlider = ({ label, defaultValue, disabled, onChange }: Percentag
                     <input type="range" className="level disabled:opacity-30  "
                         style={{ cursor: disabled ? "not-allowed" : "pointer" }}
                         disabled={disabled} onChange={(e) => {
-                            setValue(Number(e.target.value))
                             onChange?.(Number(e.target.value))
                         }} value={value} />
 
