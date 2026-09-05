@@ -1,10 +1,13 @@
+import { DEFAULT_TEXTURE, type TextureSettings } from "@/lib/texture";
 import { useGradientStore } from "@/store/gradient-store";
 import { useGridDotsStore } from "@/store/grid-dots-store";
 import { useMaskStore } from "@/store/masking-store";
+import { useTextureStore } from "@/store/texture-store";
 
 export type GradientType = "linear" | "radial";
 export type PatternType = "none" | "grid" | "dots";
 export type MaskType = "linear" | "radial";
+export type { TextureSettings };
 
 export interface GeneratorSnapshot {
   version: 1;
@@ -28,6 +31,7 @@ export interface GeneratorSnapshot {
     gridColor: string;
     dotsColor: string;
   };
+  texture: TextureSettings;
   mask: {
     enabled: boolean;
     type: MaskType;
@@ -67,6 +71,7 @@ export const DEFAULT_SNAPSHOT: GeneratorSnapshot = {
     gridColor: "#e5e7eb",
     dotsColor: "#e5e7eb",
   },
+  texture: { ...DEFAULT_TEXTURE },
   mask: {
     enabled: false,
     type: "radial",
@@ -87,6 +92,7 @@ export const DEFAULT_SNAPSHOT: GeneratorSnapshot = {
 export function getSnapshot(): GeneratorSnapshot {
   const gradient = useGradientStore.getState();
   const pattern = useGridDotsStore.getState();
+  const texture = useTextureStore.getState();
   const mask = useMaskStore.getState();
   return {
     version: 1,
@@ -109,6 +115,11 @@ export function getSnapshot(): GeneratorSnapshot {
       dotsSize: pattern.dotsSize,
       gridColor: pattern.gridColor,
       dotsColor: pattern.dotsColor,
+    },
+    texture: {
+      type: texture.type,
+      intensity: texture.intensity,
+      scale: texture.scale,
     },
     mask: {
       enabled: mask.addMask,
@@ -137,6 +148,11 @@ export function applySnapshot(snapshot: GeneratorSnapshot) {
     dotsSize: snapshot.pattern.dotsSize,
     gridColor: snapshot.pattern.gridColor,
     dotsColor: snapshot.pattern.dotsColor,
+  });
+  useTextureStore.setState({
+    type: snapshot.texture?.type ?? DEFAULT_TEXTURE.type,
+    intensity: snapshot.texture?.intensity ?? DEFAULT_TEXTURE.intensity,
+    scale: snapshot.texture?.scale ?? DEFAULT_TEXTURE.scale,
   });
   useMaskStore.setState({
     addMask: snapshot.mask.enabled,

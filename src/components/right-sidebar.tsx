@@ -8,6 +8,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import GradientRange from "./rightSidebar/gradient-rage"
 import GridsOrDots from "./rightSidebar/gridsOrDots"
+import TextureControls from "./rightSidebar/texture-controls"
 import MaskControls from "./rightSidebar/mask-controller"
 
 const RightSidebar = () => {
@@ -32,6 +33,7 @@ const RightSidebar = () => {
                 <Directions />
                 <GradientRange />
                 <GridsOrDots />
+                <TextureControls />
                 <MaskControls />
             </div>
         </div>

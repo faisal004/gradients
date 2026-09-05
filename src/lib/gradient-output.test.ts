@@ -28,6 +28,15 @@ describe("gradient output", () => {
     expect(buildMask(snapshot)).toContain("to top left");
   });
 
+  it("layers film grain and ordered dither over the gradient", () => {
+    const snapshot = copy();
+    snapshot.texture = { type: "noise", intensity: 20, scale: 160 };
+    expect(buildPreviewStyle(snapshot).backgroundImage).toContain("feTurbulence");
+    expect(buildPreviewStyle(snapshot).backgroundBlendMode).toContain("overlay");
+    snapshot.texture = { type: "dither", intensity: 18, scale: 4 };
+    expect(buildPreviewStyle(snapshot).backgroundImage).toContain("shape-rendering");
+  });
+
   it("keeps preview, CSS, React, and SVG exports in sync", () => {
     const snapshot = copy();
     snapshot.mask.enabled = true;

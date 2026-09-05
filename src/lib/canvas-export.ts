@@ -1,4 +1,5 @@
 import type { GeneratorSnapshot } from "./generator-state";
+import { paintTexture } from "./texture";
 
 type Stop = { color: string; percentage: number };
 
@@ -82,6 +83,8 @@ export function renderSnapshotToCanvas(snapshot: GeneratorSnapshot, width = 1600
       }
     }
   }
+
+  paintTexture(context, width, height, snapshot.texture ?? { type: "none", intensity: 0, scale: 160 });
 
   if (snapshot.mask.enabled) {
     const maskCanvas = document.createElement("canvas");

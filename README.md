@@ -6,6 +6,7 @@ A tactile, responsive gradient studio for designing layered CSS backgrounds and 
 
 - Live linear and radial gradients with constrained color stops
 - Grid and dot overlays
+- Film-grain noise and ordered-dither texture overlays
 - Linear and radial masks with fade, spotlight, vignette, and edge presets
 - Undo, redo, reset, and randomize
 - Dedicated gallery with 26 ready-to-edit presets and shuffle

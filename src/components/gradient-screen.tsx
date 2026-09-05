@@ -5,6 +5,7 @@ import { getSnapshot } from "@/lib/generator-state";
 import { useGradientStore } from "@/store/gradient-store";
 import { useGridDotsStore } from "@/store/grid-dots-store";
 import { useMaskStore } from "@/store/masking-store";
+import { useTextureStore } from "@/store/texture-store";
 import ExportPanel from "./export-panel";
 import WorkspaceToolbar from "./workspace-toolbar";
 
@@ -12,6 +13,7 @@ const GradientScreen = () => {
   useGradientStore();
   useGridDotsStore();
   useMaskStore();
+  useTextureStore();
   const snapshot = getSnapshot();
 
   return (

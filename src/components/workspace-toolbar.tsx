@@ -6,6 +6,7 @@ import { applySnapshot, DEFAULT_SNAPSHOT, type GeneratorSnapshot, getSnapshot } 
 import { useGradientStore } from "@/store/gradient-store";
 import { useGridDotsStore } from "@/store/grid-dots-store";
 import { useMaskStore } from "@/store/masking-store";
+import { useTextureStore } from "@/store/texture-store";
 import { Button } from "./ui/button";
 
 const MAX_HISTORY = 50;
@@ -42,7 +43,7 @@ export default function WorkspaceToolbar() {
         refresh();
       }, 220);
     };
-    const unsubscribers = [useGradientStore.subscribe(record), useGridDotsStore.subscribe(record), useMaskStore.subscribe(record)];
+    const unsubscribers = [useGradientStore.subscribe(record), useGridDotsStore.subscribe(record), useMaskStore.subscribe(record), useTextureStore.subscribe(record)];
     return () => { unsubscribers.forEach(unsubscribe => unsubscribe()); window.clearTimeout(timer.current); };
   }, []);
 

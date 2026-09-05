@@ -9,11 +9,12 @@ import { getSnapshot } from "@/lib/generator-state";
 import { useGradientStore } from "@/store/gradient-store";
 import { useGridDotsStore } from "@/store/grid-dots-store";
 import { useMaskStore } from "@/store/masking-store";
+import { useTextureStore } from "@/store/texture-store";
 
 type Format = "CSS" | "Tailwind" | "React" | "Variables" | "SVG";
 
 export default function ExportPanel() {
-  useGradientStore(); useGridDotsStore(); useMaskStore();
+  useGradientStore(); useGridDotsStore(); useMaskStore(); useTextureStore();
   const [format, setFormat] = useState<Format>("CSS");
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);

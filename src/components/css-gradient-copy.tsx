@@ -8,11 +8,12 @@ import { getSnapshot } from "@/lib/generator-state";
 import { useGradientStore } from "@/store/gradient-store";
 import { useGridDotsStore } from "@/store/grid-dots-store";
 import { useMaskStore } from "@/store/masking-store";
+import { useTextureStore } from "@/store/texture-store";
 
 export { getVanillaCSS } from "@/lib/gradient-output";
 
 export default function CssGradientCopyButton() {
-  useGradientStore(); useGridDotsStore(); useMaskStore();
+  useGradientStore(); useGridDotsStore(); useMaskStore(); useTextureStore();
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {

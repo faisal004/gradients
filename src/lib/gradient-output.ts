@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { GeneratorSnapshot } from "./generator-state";
+import { buildTextureLayer } from "./texture";
 
 const directionValue = (direction: string) => `to ${direction.replaceAll("-", " ")}`;
 
@@ -41,15 +42,29 @@ export function buildMask(snapshot: GeneratorSnapshot) {
 export function buildPreviewStyle(snapshot: GeneratorSnapshot): CSSProperties {
   const gradient = buildGradient(snapshot);
   const pattern = buildPattern(snapshot);
+  const texture = buildTextureLayer(snapshot.texture ?? { type: "none", intensity: 0, scale: 160 });
   const patternSize = snapshot.pattern.type === "grid" ? snapshot.pattern.gridSize : snapshot.pattern.dotsSize;
   const mask = buildMask(snapshot);
+  const images = [texture?.image, pattern || null, gradient].filter(Boolean).join(", ");
+  const sizes = [
+    texture?.size,
+    snapshot.pattern.type === "grid" ? `${patternSize}px ${patternSize}px, ${patternSize}px ${patternSize}px` : snapshot.pattern.type === "dots" ? `${patternSize}px ${patternSize}px` : null,
+    "cover",
+  ].filter(Boolean).join(", ");
+  const repeats = [
+    texture ? "repeat" : null,
+    snapshot.pattern.type === "grid" ? "repeat, repeat" : snapshot.pattern.type === "dots" ? "repeat" : null,
+    "no-repeat",
+  ].filter(Boolean).join(", ");
+  const blends = texture
+    ? ["overlay", ...(snapshot.pattern.type === "grid" ? ["normal", "normal"] : snapshot.pattern.type === "dots" ? ["normal"] : []), "normal"].join(", ")
+    : undefined;
   return {
-    backgroundImage: pattern ? `${pattern}, ${gradient}` : gradient,
-    backgroundSize: snapshot.pattern.type === "grid"
-      ? `${patternSize}px ${patternSize}px, ${patternSize}px ${patternSize}px, cover`
-      : snapshot.pattern.type === "dots" ? `${patternSize}px ${patternSize}px, cover` : "cover",
-    backgroundRepeat: snapshot.pattern.type === "grid" ? "repeat, repeat, no-repeat" : snapshot.pattern.type === "dots" ? "repeat, no-repeat" : "no-repeat",
+    backgroundImage: images,
+    backgroundSize: sizes,
+    backgroundRepeat: repeats,
     backgroundPosition: "center",
+    ...(blends ? { backgroundBlendMode: blends } : {}),
     ...(mask ? {
       WebkitMaskImage: mask,
       WebkitMaskRepeat: snapshot.mask.repeat,
@@ -71,7 +86,9 @@ export function getVanillaCSS(snapshot: GeneratorSnapshot) {
 }
 
 export function getCSSVariables(snapshot: GeneratorSnapshot) {
-  return `:root {\n  --gradient: ${buildGradient(snapshot)};\n${buildPattern(snapshot) ? `  --pattern: ${buildPattern(snapshot)};\n` : ""}${buildMask(snapshot) ? `  --mask: ${buildMask(snapshot)};\n` : ""}}\n\n.gradient {\n  background-image: ${buildPattern(snapshot) ? "var(--pattern), " : ""}var(--gradient);\n}`;
+  const texture = buildTextureLayer(snapshot.texture ?? { type: "none", intensity: 0, scale: 160 });
+  const layers = [texture ? "var(--texture)" : "", buildPattern(snapshot) ? "var(--pattern)" : "", "var(--gradient)"].filter(Boolean).join(", ");
+  return `:root {\n  --gradient: ${buildGradient(snapshot)};\n${buildPattern(snapshot) ? `  --pattern: ${buildPattern(snapshot)};\n` : ""}${texture ? `  --texture: ${texture.image};\n` : ""}${buildMask(snapshot) ? `  --mask: ${buildMask(snapshot)};\n` : ""}}\n\n.gradient {\n  background-image: ${layers};\n}`;
 }
 
 export function getReactStyle(snapshot: GeneratorSnapshot) {
@@ -83,7 +100,7 @@ export function getReactStyle(snapshot: GeneratorSnapshot) {
 
 export function getTailwind(snapshot: GeneratorSnapshot) {
   const css = getVanillaCSS(snapshot).replaceAll("_", "\\_");
-  return `<div className="min-h-screen bg-[${buildGradient(snapshot).replaceAll(" ", "_")}]">\n  {/* Add overlay styles when using a grid, dots, or mask. */}\n</div>\n\n/* Full fidelity */\n.gradient {\n${css.split("\n").map(line => `  ${line}`).join("\n")}\n}`;
+  return `<div className="min-h-screen bg-[${buildGradient(snapshot).replaceAll(" ", "_")}]">\n  {/* Add overlay styles when using a grid, dots, texture, or mask. */}\n</div>\n\n/* Full fidelity */\n.gradient {\n${css.split("\n").map(line => `  ${line}`).join("\n")}\n}`;
 }
 
 export function getSVG(snapshot: GeneratorSnapshot, width = 1600, height = 900) {
