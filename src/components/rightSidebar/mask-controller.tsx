@@ -2,7 +2,6 @@
 
 import { useMaskStore } from "@/store/masking-store";
 import { Switch } from "../ui/switch";
-import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import ColorPicker from "../color-picker";
@@ -82,9 +81,17 @@ export default function MaskControls() {
           <PercentageSlider label="To" value={mask.toPercentage} onChange={mask.setToPercentage} />
         </div>
         {mask.maskType === "radial" && <PointSelector position={mask.radialPosition} setPosition={mask.setRadialPosition} />}
-        <div className="grid grid-cols-2 gap-2">
-          <Label className="space-y-1 text-xs"><span>Mask size</span><Input value={mask.maskSize} onChange={event => mask.setMaskSize(event.target.value)} /></Label>
-          <div className="space-y-1 text-xs">
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1 text-xs">
+            <label htmlFor="mask-size">Mask size</label>
+            <Input
+              id="mask-size"
+              value={mask.maskSize}
+              onChange={event => mask.setMaskSize(event.target.value)}
+              className="font-mono text-xs"
+            />
+          </div>
+          <div className="flex flex-col gap-1 text-xs">
             <span>Repeat</span>
             <Select value={mask.maskRepeat} onValueChange={value => mask.setMaskRepeat(value as typeof mask.maskRepeat)}>
               <SelectTrigger className="w-full text-xs" aria-label="Mask repeat">
